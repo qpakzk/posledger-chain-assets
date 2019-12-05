@@ -15,16 +15,19 @@ import com.poscoict.posledger.chain.assets.config.Config;
 
 import java.nio.file.Paths;
 import java.security.PrivateKey;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
+import static com.sun.activation.registries.LogSupport.log;
+
 public class EnrollmentUser {
 
-    X509Identity identity = null;
-    String userID = null;
+    String userID;
 
-    AddressUtils addressUtils = new AddressUtils();
-
+    EnrollmentUser() {
+        this.userID = null;
+    }
 
     public void enrollAdmin() throws Exception {
 
@@ -38,14 +41,14 @@ public class EnrollmentUser {
         Wallet wallet = Wallet.createFileSystemWallet(Paths.get("wallet"));
 
         if(wallet == null)
-            System.out.println("wallet fail");
+            log("wallet fail");
         else {
-            System.out.println(wallet.toString() + "------------------------------");
+            log(wallet.toString() + "------------------------------");
             // Check to see if we've already enrolled the admin user.
             adminExists = wallet.exists(Config.getADMIN());
 
             if (adminExists) {
-                System.out.println("An identity for the admin user \"admin\" already exists in the wallet");
+                log("An identity for the admin user \"admin\" already exists in the wallet");
                 return;
             }
 
@@ -56,7 +59,7 @@ public class EnrollmentUser {
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
             Identity user = Identity.createIdentity("Org1MSP", enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
-            System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
+            log("Successfully enrolled user \"admin\" and imported it into the wallet");
         }
     }
 
@@ -75,13 +78,13 @@ public class EnrollmentUser {
         // Check to see if we've already enrolled the user.
         boolean userExists = wallet.exists(this.userID);
         if (userExists) {
-            System.out.println("An identity for the user " + this.userID + " already exists in the wallet");
+            log("An identity for the user " + this.userID + " already exists in the wallet");
             return null;
         }
 
         userExists = wallet.exists("admin");
         if (!userExists) {
-            System.out.println("\"admin\" needs to be enrolled and added to the wallet first");
+            log("\"admin\" needs to be enrolled and added to the wallet first");
             return null;
         }
 
@@ -95,7 +98,7 @@ public class EnrollmentUser {
 
             @Override
             public Set<String> getRoles() {
-                return null;
+                return Collections.emptySet();
             }
 
             @Override
@@ -138,7 +141,7 @@ public class EnrollmentUser {
         Enrollment enrollment = caClient.enroll(this.userID, enrollmentSecret);
         Identity user = Identity.createIdentity("Org1MSP", enrollment.getCert(), enrollment.getKey());
         wallet.put(this.userID, user);
-        System.out.println("Successfully enrolled user " + this.userID + " and imported it into the wallet");
+        log("Successfully enrolled user " + this.userID + " and imported it into the wallet");
 
         return enrollment;
     }

@@ -1,7 +1,5 @@
-package com.poscoict.posledger.chain.assets.chaincode.EERC721;
+package com.poscoict.posledger.chain.assets.chaincode;
 
-import com.poscoict.posledger.chain.assets.chaincode.AddressUtils;
-import com.poscoict.posledger.chain.assets.chaincode.ERC721.ERC721;
 import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.identity.X509Identity;
 

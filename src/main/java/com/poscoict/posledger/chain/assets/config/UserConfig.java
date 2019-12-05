@@ -49,7 +49,7 @@ public class UserConfig {
         enrollmentForOperator = _enrollmentForOperator;
     }
 
-    public static UserContext initUserContextForOwner() throws Exception {
+    public static UserContext initUserContextForOwner() {
 
         userContextForOwner = new UserContext();
         userContextForOwner.setName(owner);
@@ -60,7 +60,7 @@ public class UserConfig {
         return userContextForOwner;
     }
 
-    public static UserContext initUserContextForNewOwner() throws Exception {
+    public static UserContext initUserContextForNewOwner() {
 
         userContextForNewOwner = new UserContext();
         userContextForNewOwner.setName(newOwner);
@@ -71,7 +71,7 @@ public class UserConfig {
         return userContextForNewOwner;
     }
 
-    public static UserContext initUserContextForApproved() throws Exception {
+    public static UserContext initUserContextForApproved() {
 
         userContextForApproved = new UserContext();
         userContextForApproved.setName(approved);
@@ -82,7 +82,7 @@ public class UserConfig {
         return userContextForApproved;
     }
 
-    public static UserContext initUserContextForOperator() throws Exception {
+    public static UserContext initUserContextForOperator() {
 
         userContextForOperator = new UserContext();
         userContextForOperator.setName(operator);

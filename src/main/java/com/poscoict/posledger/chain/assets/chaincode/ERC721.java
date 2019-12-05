@@ -46,7 +46,7 @@ public class ERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -74,7 +74,7 @@ public class ERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -98,7 +98,7 @@ public class ERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -136,7 +136,7 @@ public class ERC721 {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
         return result;
     }
@@ -160,7 +160,7 @@ public class ERC721 {
                 result = pres.getMessage();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -197,7 +197,7 @@ public class ERC721 {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
         return result;
     }
@@ -227,7 +227,7 @@ public class ERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -265,7 +265,7 @@ public class ERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
         return result;
     }

@@ -45,7 +45,7 @@ public class EERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());        
         }
 
         return result;
@@ -73,7 +73,7 @@ public class EERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -106,7 +106,7 @@ public class EERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -172,7 +172,7 @@ public class EERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
         
         return result;
@@ -198,7 +198,7 @@ public class EERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;
@@ -221,7 +221,7 @@ public class EERC721 {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return result;

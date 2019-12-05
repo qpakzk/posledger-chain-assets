@@ -257,7 +257,7 @@ public class ERC721 {
     /*
      * main method is not used
      */
-    public static void main(String args[]) throws UnsupportedOperationException {
+    public static void main(String args[])  {
 
     }
 }

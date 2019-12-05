@@ -46,12 +46,12 @@ public class EnrollmentUser {
         if(wallet == null)
             Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "wallet fail");
         else {
-            log(wallet.toString() + "------------------------------");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "------------------------------");
             // Check to see if we've already enrolled the admin user.
             adminExists = wallet.exists(Config.getADMIN());
 
             if (adminExists) {
-                log("An identity for the admin user \"admin\" already exists in the wallet");
+                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "An identity for the admin user \"admin\" already exists in the wallet");
                 return;
             }
 

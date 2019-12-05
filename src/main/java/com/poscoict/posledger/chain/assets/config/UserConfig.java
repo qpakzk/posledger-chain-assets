@@ -1,10 +1,14 @@
 package com.poscoict.posledger.chain.assets.config;
 
+import com.poscoict.posledger.chain.assets.chaincode.ERC721;
 import org.hyperledger.fabric.sdk.*;
 
 import com.poscoict.posledger.chain.assets.client.ChannelClient;
 import com.poscoict.posledger.chain.assets.client.FabricClient;
 import com.poscoict.posledger.chain.assets.user.UserContext;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserConfig {
 
@@ -97,7 +101,7 @@ public class UserConfig {
         try {
             fabClient = new FabricClient(userContextForOwner);
         } catch (Throwable e) {
-            e.printStackTrace();
+            Logger.getLogger(UserConfig.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         ChannelClient channelClient = fabClient.createChannelClient(Config.CHANNEL_NAME);

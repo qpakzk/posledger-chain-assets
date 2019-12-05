@@ -78,11 +78,11 @@ public class AddressUtils {
     }
 
     public static String getMyAddress(X509Identity identity) {
-        String result = AddressUtils.getAddressFor(getMyCertificate(identity));
-        if(result != null)
-            return result;
-        
-        return "";
+        X509Certificate cert = getMyCertificate(identity);
+        if(cert != null)
+            return AddressUtils.getAddressFor(cert);
+        else
+            return "FAILURE";
     }
 
     public static X509Certificate getMyCertificate(X509Identity _identity) {

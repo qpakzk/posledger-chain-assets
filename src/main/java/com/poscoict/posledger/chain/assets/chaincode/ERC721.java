@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class ERC721 {
     
-    public String register(String tokenId, String owner) {
+    public String register(String tokenId) {
 
         String result = "";
         try {
@@ -40,8 +40,7 @@ public class ERC721 {
             
             Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
             for (ProposalResponse res: responses) {
-                ChaincodeResponse.Status status = res.getStatus();
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"mint on "+Config.getChannelName() + ". STATUS - " + status + " Message - " + res.getMessage());
+                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"mint on "+Config.getChannelName());
                 result = res.getMessage();
             }
 
@@ -52,7 +51,7 @@ public class ERC721 {
         return result;
     }
 
-    public String balanceOf(String owner) {
+    public String balanceOf() {
 
         String result = "";
         try {
@@ -62,11 +61,8 @@ public class ERC721 {
             String addr = AddressUtils.getMyAddress(identity);
 
             ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
 
             Thread.sleep(1000);
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, "Query token ");
-
             Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "balanceOf", new String[]{addr});
             for (ProposalResponse pres : responses1Query) {
                 Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
@@ -86,11 +82,8 @@ public class ERC721 {
         try {
 
             ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
 
             Thread.sleep(1000);
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, "Query token ");
-
             Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "ownerOf", new String[]{tokenId});
             for (ProposalResponse pres : responses1Query) {
                 Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
@@ -104,7 +97,7 @@ public class ERC721 {
         return result;
     }
 
-    public String approve(String approved, String tokenId) {
+    public String approve(String tokenId) {
         String result = "";
         try {
 
@@ -129,8 +122,7 @@ public class ERC721 {
             
             Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
             for (ProposalResponse res: responses) {
-                ChaincodeResponse.Status status = res.getStatus();
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"approve on "+Config.getChannelName() + ". STATUS - " + status + " Message - " + res.getMessage());
+                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"approve on "+Config.getChannelName());
                 result = res.getMessage();
             }
 
@@ -146,14 +138,11 @@ public class ERC721 {
         String result="";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
+            UserConfig.initUserContextForOwner();
 
             ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
 
             Thread.sleep(1000);
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, "Query token ");
-
             Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "getApproved", new String[]{tokenId});
             for (ProposalResponse pres : responses1Query) {
                 Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
@@ -166,7 +155,7 @@ public class ERC721 {
         return result;
     }
 
-    public String setApprovalForAll(String owner, String operator, String approved) {
+    public String setApprovalForAll(String approved) {
         String result = "";
         try {
 
@@ -190,8 +179,7 @@ public class ERC721 {
             
             Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
             for (ProposalResponse res: responses) {
-                ChaincodeResponse.Status status = res.getStatus();
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"setApprovalForAll on "+Config.getChannelName() + ". STATUS - " + status + " Message - " + res.getMessage());
+                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"setApprovalForAll on "+Config.getChannelName());
                 result = res.getMessage();
             }
 
@@ -202,7 +190,7 @@ public class ERC721 {
         return result;
     }
 
-    public String isApprovedForAll(String owner, String operator) {
+    public String isApprovedForAll() {
         String result = "";
         try {
 
@@ -215,11 +203,8 @@ public class ERC721 {
             String addrOperator = AddressUtils.getMyAddress(identity);
 
             ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
 
             Thread.sleep(1000);
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, "Query token ");
-
             Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "isApprovedForAll", new String[]{addr, addrOperator});
             for (ProposalResponse pres : responses1Query) {
                 Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
@@ -233,7 +218,7 @@ public class ERC721 {
         return result;
     }
 
-    public String transfer(String owner, String receiver, String tokenId) {
+    public String transfer(String tokenId) {
         String result = "";
         try {
 
@@ -259,8 +244,7 @@ public class ERC721 {
             
             Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
             for (ProposalResponse res: responses) {
-                ChaincodeResponse.Status status = res.getStatus();
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"transfer on "+Config.getChannelName() + ". STATUS - " + status + " Message - " + res.getMessage());
+                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"transfer on "+Config.getChannelName());
                 result = res.getMessage();
             }
 

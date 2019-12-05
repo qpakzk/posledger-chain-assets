@@ -53,8 +53,8 @@ public class UserConfig {
 
         userContextForOwner = new UserContext();
         userContextForOwner.setName(owner);
-        userContextForOwner.setAffiliation(Config.ORG1);
-        userContextForOwner.setMspId(Config.ORG1_MSP);
+        userContextForOwner.setAffiliation(Config.getORG1());
+        userContextForOwner.setMspId(Config.getOrg1Msp());
         userContextForOwner.setEnrollment(enrollment);
 
         return userContextForOwner;
@@ -64,8 +64,8 @@ public class UserConfig {
 
         userContextForNewOwner = new UserContext();
         userContextForNewOwner.setName(newOwner);
-        userContextForNewOwner.setAffiliation(Config.ORG1);
-        userContextForNewOwner.setMspId(Config.ORG1_MSP);
+        userContextForNewOwner.setAffiliation(Config.getORG1());
+        userContextForNewOwner.setMspId(Config.getOrg1Msp());
         userContextForNewOwner.setEnrollment(enrollmentForNewOwner);
 
         return userContextForNewOwner;
@@ -75,8 +75,8 @@ public class UserConfig {
 
         userContextForApproved = new UserContext();
         userContextForApproved.setName(approved);
-        userContextForApproved.setAffiliation(Config.ORG1);
-        userContextForApproved.setMspId(Config.ORG1_MSP);
+        userContextForApproved.setAffiliation(Config.getORG1());
+        userContextForApproved.setMspId(Config.getOrg1Msp());
         userContextForApproved.setEnrollment(enrollmentForApproved);
 
         return userContextForApproved;
@@ -86,8 +86,8 @@ public class UserConfig {
 
         userContextForOperator = new UserContext();
         userContextForOperator.setName(operator);
-        userContextForOperator.setAffiliation(Config.ORG1);
-        userContextForOperator.setMspId(Config.ORG1_MSP);
+        userContextForOperator.setAffiliation(Config.getORG1());
+        userContextForOperator.setMspId(Config.getOrg1Msp());
         userContextForOperator.setEnrollment(enrollmentForOperator);
 
         return userContextForOperator;
@@ -104,11 +104,11 @@ public class UserConfig {
             Logger.getLogger(UserConfig.class.getName()).log(Level.INFO, e.getMessage());
         }
 
-        ChannelClient channelClient = fabClient.createChannelClient(Config.CHANNEL_NAME);
+        ChannelClient channelClient = fabClient.createChannelClient(Config.getChannelName());
         Channel channel = channelClient.getChannel();
-        Peer peer = fabClient.getInstance().newPeer(Config.ORG1_PEER_0, Config.ORG1_PEER_0_URL);
-        EventHub eventHub = fabClient.getInstance().newEventHub("eventhub01", Config.EVENT_HUB);
-        Orderer orderer = fabClient.getInstance().newOrderer(Config.ORDERER_NAME, Config.ORDERER_URL);
+        Peer peer = fabClient.getInstance().newPeer(Config.getOrg1Peer0(), Config.getOrg1Peer0Url());
+        EventHub eventHub = fabClient.getInstance().newEventHub("eventhub01", Config.getEventHub());
+        Orderer orderer = fabClient.getInstance().newOrderer(Config.getOrdererName(), Config.getOrdererUrl());
         channel.addPeer(peer);
         channel.addEventHub(eventHub);
         channel.addOrderer(orderer);

@@ -1,5 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
+import com.poscoict.posledger.chain.assets.config.Config;
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.hyperledger.fabric.protos.msp.Identities;
@@ -12,6 +13,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -95,6 +98,7 @@ public class AddressUtils {
             return (X509Certificate) factory.generateCertificate(new ByteArrayInputStream(x509Data));
         } catch (IOException | CertificateException e) {
             e.printStackTrace();
+            Logger.getLogger(AddressUtils.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return null;

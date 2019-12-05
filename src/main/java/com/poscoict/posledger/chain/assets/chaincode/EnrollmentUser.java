@@ -21,8 +21,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.sun.activation.registries.LogSupport.log;
-
 public class EnrollmentUser {
 
     String userID;

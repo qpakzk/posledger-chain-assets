@@ -30,7 +30,7 @@ public class EnrollmentUser {
 
         boolean adminExists = false;
         // if url starts as https.., need to set SSL
-        HFCAClient caClient = HFCAClient.createNewInstance(Config.CA_ORG1_URL, null/*props*/);
+        HFCAClient caClient = HFCAClient.createNewInstance(Config.getCaOrg1Url(), null/*props*/);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 
@@ -42,7 +42,7 @@ public class EnrollmentUser {
         else {
             System.out.println(wallet.toString() + "------------------------------");
             // Check to see if we've already enrolled the admin user.
-            adminExists = wallet.exists(Config.ADMIN);
+            adminExists = wallet.exists(Config.getADMIN());
 
             if (adminExists) {
                 System.out.println("An identity for the admin user \"admin\" already exists in the wallet");
@@ -53,9 +53,9 @@ public class EnrollmentUser {
             final EnrollmentRequest enrollmentRequestTLS = new EnrollmentRequest();
             enrollmentRequestTLS.addHost("localhost");
             enrollmentRequestTLS.setProfile("tls");
-            Enrollment enrollment = caClient.enroll(Config.ADMIN, Config.ADMIN_PASSWORD, enrollmentRequestTLS);
+            Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
             Identity user = Identity.createIdentity("Org1MSP", enrollment.getCert(), enrollment.getKey());
-            wallet.put(Config.ADMIN, user);
+            wallet.put(Config.getADMIN(), user);
             System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
         }
     }
@@ -65,7 +65,7 @@ public class EnrollmentUser {
         this.userID = _userID;
 
         // if url starts as https.., need to set SSL
-        HFCAClient caClient = HFCAClient.createNewInstance(Config.CA_ORG1_URL, null/*props*/);
+        HFCAClient caClient = HFCAClient.createNewInstance(Config.getCaOrg1Url(), null/*props*/);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 

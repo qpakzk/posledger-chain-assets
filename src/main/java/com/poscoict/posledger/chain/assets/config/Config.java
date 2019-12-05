@@ -4,6 +4,16 @@ public class Config {
 	
 	private static String ORG1_MSP;
 
+	private static String ORG1;
+	
+	public static String getORG1() {
+		return ORG1;
+	}
+
+	public static void setORG1(String ORG1) {
+		Config.ORG1 = ORG1;
+	}
+
 	public static String getOrg1Msp() {
 		return ORG1_MSP;
 	}
@@ -11,8 +21,6 @@ public class Config {
 	public static void setOrg1Msp(String org1Msp) {
 		ORG1_MSP = org1Msp;
 	}
-
-	public static String ORG1;
 
 	public static String ADMIN;
 

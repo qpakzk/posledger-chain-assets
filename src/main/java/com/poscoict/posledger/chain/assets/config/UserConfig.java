@@ -100,7 +100,7 @@ public class UserConfig {
 
         try {
             fabClient = new FabricClient(userContextForOwner);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             Logger.getLogger(UserConfig.class.getName()).log(Level.INFO, e.getMessage());
         }
 

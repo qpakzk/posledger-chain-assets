@@ -76,10 +76,6 @@ public class AddressUtils {
         return result.toString();
     }
 
-    private String getAddressOf(byte[] publicKey) {
-        return AddressUtils.getAddressFor(publicKey);
-    }
-
     public static String getMyAddress(X509Identity identity) {
         X509Certificate cert = getMyCertificate(identity);
         if(cert != null)
@@ -88,10 +84,10 @@ public class AddressUtils {
             return "FAILURE";
     }
 
-    public static X509Certificate getMyCertificate(X509Identity _identity) {
+    public static X509Certificate getMyCertificate(X509Identity identity) {
         try {
-            Identities.SerializedIdentity identity = _identity.createSerializedIdentity();
-            StringReader reader = new StringReader(identity.getIdBytes().toStringUtf8());
+            Identities.SerializedIdentity serializedIdentity = identity.createSerializedIdentity();
+            StringReader reader = new StringReader(serializedIdentity.getIdBytes().toStringUtf8());
             PemReader pr = new PemReader(reader);
             byte[] x509Data = pr.readPemObject().getContent();
             CertificateFactory factory = CertificateFactory.getInstance("X509");

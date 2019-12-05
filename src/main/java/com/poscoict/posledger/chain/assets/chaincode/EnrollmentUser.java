@@ -24,6 +24,7 @@ import static com.sun.activation.registries.LogSupport.log;
 public class EnrollmentUser {
 
     String userID;
+    static final String Org1MSP = "Org1MSP";
 
     EnrollmentUser() {
         this.userID = null;
@@ -57,7 +58,7 @@ public class EnrollmentUser {
             enrollmentRequestTLS.addHost("localhost");
             enrollmentRequestTLS.setProfile("tls");
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
-            Identity user = Identity.createIdentity("Org1MSP", enrollment.getCert(), enrollment.getKey());
+            Identity user = Identity.createIdentity(Org1MSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
             log("Successfully enrolled user \"admin\" and imported it into the wallet");
         }
@@ -82,18 +83,18 @@ public class EnrollmentUser {
             return null;
         }
 
-        userExists = wallet.exists("admin");
+        userExists = wallet.exists(Config.getADMIN());
         if (!userExists) {
             log("\"admin\" needs to be enrolled and added to the wallet first");
             return null;
         }
 
-        Identity adminIdentity = wallet.get("admin");
+        Identity adminIdentity = wallet.get(Config.getADMIN());
         User admin = new User() {
 
             @Override
             public String getName() {
-                return "admin";
+                return Config.getADMIN();
             }
 
             @Override
@@ -129,7 +130,7 @@ public class EnrollmentUser {
 
             @Override
             public String getMspId() {
-                return "Org1MSP";
+                return Org1MSP;
             }
         };
 
@@ -139,7 +140,7 @@ public class EnrollmentUser {
         registrationRequest.setEnrollmentID(this.userID);
         String enrollmentSecret = caClient.register(registrationRequest, admin);
         Enrollment enrollment = caClient.enroll(this.userID, enrollmentSecret);
-        Identity user = Identity.createIdentity("Org1MSP", enrollment.getCert(), enrollment.getKey());
+        Identity user = Identity.createIdentity(Org1MSP, enrollment.getCert(), enrollment.getKey());
         wallet.put(this.userID, user);
         log("Successfully enrolled user " + this.userID + " and imported it into the wallet");
 

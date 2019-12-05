@@ -97,7 +97,6 @@ public class AddressUtils {
             CertificateFactory factory = CertificateFactory.getInstance("X509");
             return (X509Certificate) factory.generateCertificate(new ByteArrayInputStream(x509Data));
         } catch (IOException | CertificateException e) {
-            e.printStackTrace();
             Logger.getLogger(AddressUtils.class.getName()).log(Level.INFO, e.getMessage());
         }
 

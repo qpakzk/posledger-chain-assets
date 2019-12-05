@@ -8,30 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a46bd325-4b32-4ff1-8af2-f68e9de0e186" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/chaincode/AddressUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/chaincode/EERC721.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/chaincode/ERC721.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser$1$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/client/CAClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/client/ChannelClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/client/FabricClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/config/Config.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/config/UserConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/user/UserContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/poscoict/posledger/chain/assets/user/copy/UserContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/com.maven.java-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/lib/bcpkix-jdk15on-1.60.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/lib/bcprov-jdk15on-1.60.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/lib/fabric-gateway-java-1.4.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/lib/fabric-sdk-java-1.4.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/lib/protobuf-java-3.6.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -43,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+            <state relative-caret-position="342">
+              <caret line="51" column="21" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -76,7 +52,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4256">
+            <state relative-caret-position="-75">
               <caret line="238" column="43" selection-start-line="238" selection-start-column="43" selection-end-line="238" selection-end-column="43" />
             </state>
           </provider>
@@ -100,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="97" column="13" lean-forward="true" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+            <state relative-caret-position="1138">
+              <caret line="85" column="54" selection-start-line="85" selection-start-column="54" selection-end-line="85" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#954#955#0" expanded="true" />
@@ -176,8 +152,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/config/UserConfig.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -286,7 +262,17 @@
             </path>
             <path>
               <item name="posledger-chain-assets" type="b2602c69:ProjectViewProjectNode" />
+              <item name="posledger-chain-assets" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="posledger-chain-assets" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="posledger-chain-assets" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; 1.8 &gt;" type="70bed36:NamedLibraryElementNode" />
             </path>
           </expand>
           <select />
@@ -305,7 +291,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575567990296" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575570086140" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -451,7 +437,7 @@
     <frame x="373" y="26" width="1400" height="996" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17835821" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22761194" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -476,7 +462,7 @@
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info active="true" anchor="right" id="Maven Projects" order="7" visible="true" weight="0.27910447" />
+      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.27910447" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -586,13 +572,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4256">
-          <caret line="238" column="43" selection-start-line="238" selection-start-column="43" selection-end-line="238" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1596">
@@ -628,22 +607,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+        <state relative-caret-position="-75">
+          <caret line="238" column="43" selection-start-line="238" selection-start-column="43" selection-end-line="238" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="97" column="13" lean-forward="true" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+        <state relative-caret-position="1138">
+          <caret line="85" column="54" selection-start-line="85" selection-start-column="54" selection-end-line="85" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#954#955#0" expanded="true" />
             <element signature="e#988#989#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="51" column="21" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
         </state>
       </provider>
     </entry>

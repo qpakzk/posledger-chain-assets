@@ -6,9 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SDK-JAR" />
         <module name="com.maven.java" />
         <module name="commavenjava" />
+        <module name="SDK-JAR" />
       </profile>
     </annotationProcessing>
   </component>

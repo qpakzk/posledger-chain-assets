@@ -1,12 +1,12 @@
 package com.poscoict.posledger.chain.assets.chaincode.ERC721;
 
+import com.poscoict.posledger.chain.assets.chaincode.AddressUtils;
 import org.hyperledger.fabric.sdk.ChaincodeID;
 import org.hyperledger.fabric.sdk.ChaincodeResponse;
 import org.hyperledger.fabric.sdk.ProposalResponse;
 import org.hyperledger.fabric.sdk.TransactionProposalRequest;
 import org.hyperledger.fabric.sdk.identity.X509Identity;
 
-import com.poscoict.posledger.chain.assets.chaincode.AddressUtils;
 import com.poscoict.posledger.chain.assets.client.ChannelClient;
 import com.poscoict.posledger.chain.assets.client.FabricClient;
 import com.poscoict.posledger.chain.assets.config.Config;

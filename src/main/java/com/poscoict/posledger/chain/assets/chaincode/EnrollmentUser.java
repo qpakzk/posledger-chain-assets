@@ -18,6 +18,8 @@ import java.security.PrivateKey;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.sun.activation.registries.LogSupport.log;
 
@@ -42,7 +44,7 @@ public class EnrollmentUser {
         Wallet wallet = Wallet.createFileSystemWallet(Paths.get("wallet"));
 
         if(wallet == null)
-            log("wallet fail");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "wallet fail");
         else {
             log(wallet.toString() + "------------------------------");
             // Check to see if we've already enrolled the admin user.
@@ -60,7 +62,7 @@ public class EnrollmentUser {
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
             Identity user = Identity.createIdentity(Org1MSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
-            log("Successfully enrolled user \"admin\" and imported it into the wallet");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user \"admin\" and imported it into the wallet");
         }
     }
 
@@ -79,13 +81,13 @@ public class EnrollmentUser {
         // Check to see if we've already enrolled the user.
         boolean userExists = wallet.exists(this.userID);
         if (userExists) {
-            log("An identity for the user " + this.userID + " already exists in the wallet");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "An identity for the user " + this.userID + " already exists in the wallet");
             return null;
         }
 
         userExists = wallet.exists(Config.getADMIN());
         if (!userExists) {
-            log("\"admin\" needs to be enrolled and added to the wallet first");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "\"admin\" needs to be enrolled and added to the wallet first");
             return null;
         }
 
@@ -142,7 +144,7 @@ public class EnrollmentUser {
         Enrollment enrollment = caClient.enroll(this.userID, enrollmentSecret);
         Identity user = Identity.createIdentity(Org1MSP, enrollment.getCert(), enrollment.getKey());
         wallet.put(this.userID, user);
-        log("Successfully enrolled user " + this.userID + " and imported it into the wallet");
+        Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + this.userID + " and imported it into the wallet");
 
         return enrollment;
     }

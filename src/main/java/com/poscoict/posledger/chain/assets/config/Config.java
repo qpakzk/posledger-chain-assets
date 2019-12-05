@@ -2,7 +2,15 @@ package com.poscoict.posledger.chain.assets.config;
 
 public class Config {
 	
-	public static String ORG1_MSP;
+	private static String ORG1_MSP;
+
+	public static String getOrg1Msp() {
+		return ORG1_MSP;
+	}
+
+	public static void setOrg1Msp(String org1Msp) {
+		ORG1_MSP = org1Msp;
+	}
 
 	public static String ORG1;
 

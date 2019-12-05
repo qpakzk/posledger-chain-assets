@@ -77,8 +77,12 @@ public class AddressUtils {
         return AddressUtils.getAddressFor(publicKey);
     }
 
-    public static String getMyAddress(X509Identity _identity) {
-        return AddressUtils.getAddressFor(getMyCertificate(_identity));
+    public static String getMyAddress(X509Identity identity) {
+        String result = AddressUtils.getAddressFor(getMyCertificate(identity));
+        if(result != null)
+            return result;
+        
+        return "";
     }
 
     public static X509Certificate getMyCertificate(X509Identity _identity) {

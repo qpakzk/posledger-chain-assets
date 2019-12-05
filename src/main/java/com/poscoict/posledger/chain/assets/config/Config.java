@@ -6,9 +6,9 @@ public class Config {
 
 	public static String ORG1;
 
-	public static String ADMIN = "admin";
+	public static String ADMIN;
 
-	public static String ADMIN_PASSWORD = "adminpw";
+	public static String ADMIN_PASSWORD;
 
 	public static String CA_ORG1_URL;
 	

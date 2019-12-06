@@ -15,6 +15,7 @@ import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 
 import com.poscoict.posledger.chain.assets.config.Config;
 import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
+import org.hyperledger.fabric_ca.sdk.exception.RegistrationException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -53,7 +54,7 @@ public class EnrollmentUser {
             adminExists = wallet.exists(Config.getADMIN());
 
             if (adminExists) {
-                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "An identity for the admin user \"admin\" already exists in the wallet");
+                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, Config.getADMIN(), " already exists in the wallet");
                 return;
             }
 
@@ -64,11 +65,11 @@ public class EnrollmentUser {
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
             Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user \"admin\" and imported it into the wallet");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user ", Config.getADMIN());
         }
     }
 
-    public Enrollment registerUser(String _userID) throws MalformedURLException, ClassNotFoundException, InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, CryptoException, InvalidArgumentException, IOException, EnrollmentException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException, Exception {
+    public Enrollment registerUser(String _userID) throws MalformedURLException, ClassNotFoundException, InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, CryptoException, InvalidArgumentException, IOException, EnrollmentException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException, RegistrationException {
 
         this.userID = _userID;
 
@@ -83,7 +84,7 @@ public class EnrollmentUser {
         // Check to see if we've already enrolled the user.
         boolean userExists = wallet.exists(this.userID);
         if (userExists) {
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "An identity for the user " + this.userID + " already exists in the wallet");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, this.userID, " already exists in the wallet");
             return null;
         }
 
@@ -139,14 +140,19 @@ public class EnrollmentUser {
         };
 
         // Register the user, enroll the user, and import the new identity into the wallet.
-        RegistrationRequest registrationRequest = new RegistrationRequest(this.userID);
-        registrationRequest.setAffiliation("org1.department1");
-        registrationRequest.setEnrollmentID(this.userID);
-        String enrollmentSecret = caClient.register(registrationRequest, admin);
-        Enrollment enrollment = caClient.enroll(this.userID, enrollmentSecret);
-        Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
-        wallet.put(this.userID, user);
-        Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + this.userID + " and imported it into the wallet");
+        Enrollment enrollment = null;
+        try {
+            RegistrationRequest registrationRequest = new RegistrationRequest(this.userID);
+            registrationRequest.setAffiliation("org1.department1");
+            registrationRequest.setEnrollmentID(this.userID);
+            String enrollmentSecret = caClient.register(registrationRequest, admin);
+            enrollment = caClient.enroll(this.userID, enrollmentSecret);
+            Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
+            wallet.put(this.userID, user);
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user ", this.userID);
+        } catch(Exception e) {
+
+        }
 
         return enrollment;
     }

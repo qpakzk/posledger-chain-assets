@@ -31,6 +31,10 @@ public class UserConfig {
 
     static FabricClient fabClient;
 
+    private UserConfig() {
+
+    }
+
     public static void setEnrollment(String _owner, Enrollment _enrollment) {
         owner = _owner;
         enrollment = _enrollment;

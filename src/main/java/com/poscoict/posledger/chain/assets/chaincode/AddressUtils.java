@@ -20,6 +20,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AddressUtils {
 
+    private AddressUtils() {
+        
+    }
+
     static boolean isValidAddress(String address) {
         if (address == null || address.length() != 42) {
             return false;

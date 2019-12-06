@@ -18,7 +18,7 @@ public class UserContext implements User, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	protected String name;
-	private Set<String> roles;
+	transient private Set<String> roles;
 	protected String account;
 	protected String affiliation;
 	transient protected Enrollment enrollment;

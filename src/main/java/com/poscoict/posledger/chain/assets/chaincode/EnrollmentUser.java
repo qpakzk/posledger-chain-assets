@@ -54,7 +54,7 @@ public class EnrollmentUser {
             adminExists = wallet.exists(Config.getADMIN());
 
             if (adminExists) {
-                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, Config.getADMIN(), " already exists in the wallet");
+                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "already exists in the wallet ", Config.getADMIN());
                 return;
             }
 
@@ -84,13 +84,13 @@ public class EnrollmentUser {
         // Check to see if we've already enrolled the user.
         boolean userExists = wallet.exists(this.userID);
         if (userExists) {
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, this.userID, " already exists in the wallet");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, " already exists in the wallet", this.userID);
             return null;
         }
 
         userExists = wallet.exists(Config.getADMIN());
         if (!userExists) {
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "\"admin\" needs to be enrolled and added to the wallet first");
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "needed to be enroll ", Config.getADMIN());
             return null;
         }
 

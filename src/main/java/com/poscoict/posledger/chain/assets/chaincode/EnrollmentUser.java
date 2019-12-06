@@ -4,6 +4,8 @@ import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallet.Identity;
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.User;
+import org.hyperledger.fabric.sdk.exception.CryptoException;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.identity.X509Identity;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric.sdk.security.CryptoSuiteFactory;
@@ -12,7 +14,11 @@ import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 
 import com.poscoict.posledger.chain.assets.config.Config;
+import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.util.Collections;
@@ -24,11 +30,11 @@ import java.util.logging.Logger;
 public class EnrollmentUser {
 
     String userID;
-    static final String Org1MSP = "Org1MSP";
+    static final String orgMSP = "Org1MSP";
 
     AddressUtils addressUtils;
 
-    public void enrollAdmin() throws Exception {
+    public void enrollAdmin() throws MalformedURLException, ClassNotFoundException, InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, CryptoException, InvalidArgumentException, IOException, EnrollmentException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException {
 
         boolean adminExists = false;
         // if url starts as https.., need to set SSL
@@ -56,13 +62,13 @@ public class EnrollmentUser {
             enrollmentRequestTLS.addHost("localhost");
             enrollmentRequestTLS.setProfile("tls");
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
-            Identity user = Identity.createIdentity(Org1MSP, enrollment.getCert(), enrollment.getKey());
+            Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
             Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user \"admin\" and imported it into the wallet");
         }
     }
 
-    public Enrollment registerUser(String _userID) throws Exception {
+    public Enrollment registerUser(String _userID) throws MalformedURLException, ClassNotFoundException, InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, CryptoException, InvalidArgumentException, IOException, EnrollmentException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException, Exception {
 
         this.userID = _userID;
 
@@ -128,7 +134,7 @@ public class EnrollmentUser {
 
             @Override
             public String getMspId() {
-                return Org1MSP;
+                return orgMSP;
             }
         };
 
@@ -138,7 +144,7 @@ public class EnrollmentUser {
         registrationRequest.setEnrollmentID(this.userID);
         String enrollmentSecret = caClient.register(registrationRequest, admin);
         Enrollment enrollment = caClient.enroll(this.userID, enrollmentSecret);
-        Identity user = Identity.createIdentity(Org1MSP, enrollment.getCert(), enrollment.getKey());
+        Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
         wallet.put(this.userID, user);
         Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + this.userID + " and imported it into the wallet");
 

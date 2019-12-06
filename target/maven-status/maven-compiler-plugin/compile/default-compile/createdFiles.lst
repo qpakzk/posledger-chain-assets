@@ -1,0 +1,13 @@
+com\poscoict\posledger\chain\assets\chaincode\EnrollmentUser$1.class
+com\poscoict\posledger\chain\assets\chaincode\EERC721.class
+com\poscoict\posledger\chain\assets\client\CAClient.class
+com\poscoict\posledger\chain\assets\chaincode\EnrollmentUser.class
+com\poscoict\posledger\chain\assets\client\ChannelClient.class
+com\poscoict\posledger\chain\assets\config\UserConfig.class
+com\poscoict\posledger\chain\assets\chaincode\ERC721.class
+com\poscoict\posledger\chain\assets\chaincode\EnrollmentUser$1$1.class
+com\poscoict\posledger\chain\assets\client\FabricClient.class
+com\poscoict\posledger\chain\assets\chaincode\AddressUtils.class
+com\poscoict\posledger\chain\assets\user\UserContext.class
+com\poscoict\posledger\chain\assets\user\copy\UserContext.class
+com\poscoict\posledger\chain\assets\config\Config.class

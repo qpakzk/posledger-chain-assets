@@ -1,8 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
 import com.poscoict.posledger.chain.assets.config.Config;
-import com.poscoict.posledger.chain.assets.config.UserConfig;
-import com.poscoict.posledger.chain.assets.user.UserContext;
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.hyperledger.fabric.protos.msp.Identities;
@@ -103,29 +101,5 @@ public class AddressUtils {
         }
 
         return null;
-    }
-
-    static public String getOwnerAddress() {
-        UserContext userContext = UserConfig.initUserContextForOwner();
-        X509Identity identity = new X509Identity(userContext);
-        return AddressUtils.getMyAddress(identity);
-    }
-
-    static public String getNewOwnerAddress() {
-        UserContext userContext = UserConfig.initUserContextForNewOwner();
-        X509Identity identity = new X509Identity(userContext);
-        return AddressUtils.getMyAddress(identity);
-    }
-
-    static public String getApprovedAddress() {
-        UserContext userContext = UserConfig.initUserContextForApproved();
-        X509Identity identity = new X509Identity(userContext);
-        return AddressUtils.getMyAddress(identity);
-    }
-
-    static public String getOperatorAddress() {
-        UserContext userContext = UserConfig.initUserContextForOperator();
-        X509Identity identity = new X509Identity(userContext);
-        return AddressUtils.getMyAddress(identity);
     }
 }

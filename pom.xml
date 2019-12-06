@@ -85,43 +85,37 @@
 			<groupId>org.hyperledger.fabric-sdk-java</groupId>
 			<artifactId>fabric-sdk-java</artifactId>
 			<version>1.4.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/lib/fabric-sdk-java-1.4.1.jar</systemPath>
+			<!-- <scope>system</scope> <systemPath>${project.basedir}/src/lib/fabric-sdk-java-1.4.1.jar</systemPath> -->
 		</dependency>
-
+		<!--
 		<dependency>
 			<groupId>org.hyperledger.fabric-gateway-java</groupId>
 			<artifactId>fabric-gateway-java</artifactId>
 			<version>1.4.0-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/fabric-gateway-java-1.4.0-SNAPSHOT.jar</systemPath>
+			<scope>system</scope> <systemPath>${project.basedir}/lib/fabric-gateway-java-1.4.0-SNAPSHOT.jar</systemPath>
 		</dependency>
-
+		-->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.60</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/lib/bcpkix-jdk15on-1.60.jar</systemPath>
+			<!-- <scope>system</scope> <systemPath>${project.basedir}/src/lib/bcpkix-jdk15on-1.60.jar</systemPath> -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.60</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/lib/bcprov-jdk15on-1.60.jar</systemPath>
+			<!-- <scope>system</scope> <systemPath>${project.basedir}/src/lib/bcprov-jdk15on-1.60.jar</systemPath> -->
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
 			<version>3.6.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/lib/protobuf-java-3.6.1.jar</systemPath>
+			<!-- <scope>system</scope> <systemPath>${project.basedir}/src/lib/protobuf-java-3.6.1.jar</systemPath> -->
 		</dependency>
 
 	</dependencies>
-
 
 </project>

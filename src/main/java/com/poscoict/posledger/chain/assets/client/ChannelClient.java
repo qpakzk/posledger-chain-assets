@@ -116,7 +116,7 @@ public class ChannelClient {
 		if(cf != null) {
 			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, cf.toString());
 		}
-		
+
 		return response;
 	}
 

@@ -7,7 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a46bd325-4b32-4ff1-8af2-f68e9de0e186" name="Default Changelist" comment="&quot;test&quot;">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -19,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1311">
-              <caret line="69" column="23" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="23" />
+            <state relative-caret-position="435">
+              <caret line="121" column="21" selection-start-line="121" selection-start-column="21" selection-end-line="121" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -70,11 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
+            <state relative-caret-position="335">
+              <caret line="120" column="5" lean-forward="true" selection-start-line="120" selection-start-column="5" selection-end-line="120" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -142,11 +142,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/AddressUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EERC721.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/config/UserConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -172,8 +172,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="712" />
-    <option name="y" value="207" />
+    <option name="x" value="506" />
+    <option name="y" value="166" />
     <option name="width" value="1606" />
     <option name="height" value="955" />
   </component>
@@ -589,13 +589,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1311">
-          <caret line="69" column="23" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4579">
@@ -656,8 +649,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
+        <state relative-caret-position="335">
+          <caret line="120" column="5" lean-forward="true" selection-start-line="120" selection-start-column="5" selection-end-line="120" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="121" column="21" selection-start-line="121" selection-start-column="21" selection-end-line="121" selection-end-column="21" />
         </state>
       </provider>
     </entry>

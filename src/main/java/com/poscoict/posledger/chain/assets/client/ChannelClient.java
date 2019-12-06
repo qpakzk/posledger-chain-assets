@@ -113,9 +113,10 @@ public class ChannelClient {
 		}
 
 		CompletableFuture<TransactionEvent> cf = channel.sendTransaction(response);
-		if(cf.toString() != null)
+		if(cf != null) {
 			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, cf.toString());
-
+		}
+		
 		return response;
 	}
 

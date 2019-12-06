@@ -39,7 +39,7 @@ public class EnrollmentUser {
     }
 
     String userID;
-    static final String orgMSP = "Org1MSP";
+    static final String ORGMSP = "Org1MSP";
 
     AddressUtils addressUtils;
 
@@ -71,7 +71,7 @@ public class EnrollmentUser {
             enrollmentRequestTLS.addHost("localhost");
             enrollmentRequestTLS.setProfile("tls");
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
-            Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
+            Identity user = Identity.createIdentity(orgMsp, enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
             Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + Config.getADMIN());
         }
@@ -143,7 +143,7 @@ public class EnrollmentUser {
 
             @Override
             public String getMspId() {
-                return orgMSP;
+                return ORGMSP;
             }
         };
 
@@ -155,7 +155,7 @@ public class EnrollmentUser {
             registrationRequest.setEnrollmentID(this.userID);
             String enrollmentSecret = caClient.register(registrationRequest, admin);
             enrollment = caClient.enroll(this.userID, enrollmentSecret);
-            Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
+            Identity user = Identity.createIdentity(ORGMSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(this.userID, user);
             Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + getUserID());
         } catch(Exception e) {

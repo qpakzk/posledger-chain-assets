@@ -26,9 +26,7 @@ public class EnrollmentUser {
     String userID;
     static final String Org1MSP = "Org1MSP";
 
-    EnrollmentUser() {
-        this.userID = null;
-    }
+    AddressUtils addressUtils;
 
     public void enrollAdmin() throws Exception {
 

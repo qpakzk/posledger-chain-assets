@@ -121,22 +121,6 @@
 			<systemPath>${project.basedir}/src/lib/protobuf-java-3.6.1.jar</systemPath>
 		</dependency>
 
-		<dependency>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>animal-sniffer-annotations</artifactId>
-			<version>1.17</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/lib/animal-sniffer-annotations-1.17.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>log4</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/lib/log4j-1.2.17.jar</systemPath>
-		</dependency>
-
 	</dependencies>
 
 

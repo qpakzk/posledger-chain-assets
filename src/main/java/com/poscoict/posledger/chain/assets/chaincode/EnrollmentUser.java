@@ -54,7 +54,7 @@ public class EnrollmentUser {
             adminExists = wallet.exists(Config.getADMIN());
 
             if (adminExists) {
-                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "already exists in the wallet ", Config.getADMIN());
+                Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "already exists in the wallet " + Config.getADMIN());
                 return;
             }
 
@@ -65,7 +65,7 @@ public class EnrollmentUser {
             Enrollment enrollment = caClient.enroll(Config.getADMIN(), Config.getAdminPassword(), enrollmentRequestTLS);
             Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(Config.getADMIN(), user);
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user ", Config.getADMIN());
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + Config.getADMIN());
         }
     }
 
@@ -84,13 +84,13 @@ public class EnrollmentUser {
         // Check to see if we've already enrolled the user.
         boolean userExists = wallet.exists(this.userID);
         if (userExists) {
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, " already exists in the wallet", this.userID);
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, " already exists in the wallet" + this.userID);
             return null;
         }
 
         userExists = wallet.exists(Config.getADMIN());
         if (!userExists) {
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "needed to be enroll ", Config.getADMIN());
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "needed to be enroll " + Config.getADMIN());
             return null;
         }
 
@@ -149,7 +149,7 @@ public class EnrollmentUser {
             enrollment = caClient.enroll(this.userID, enrollmentSecret);
             Identity user = Identity.createIdentity(orgMSP, enrollment.getCert(), enrollment.getKey());
             wallet.put(this.userID, user);
-            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user ", this.userID);
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + this.userID);
         } catch(Exception e) {
 
         }

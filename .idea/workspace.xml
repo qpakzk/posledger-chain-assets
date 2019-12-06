@@ -7,7 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a46bd325-4b32-4ff1-8af2-f68e9de0e186" name="Default Changelist" comment="&quot;test&quot;">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -54,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="255" selection-start-line="255" selection-end-line="255" />
+            <state relative-caret-position="337">
+              <caret line="255" lean-forward="true" selection-start-line="255" selection-end-line="255" />
             </state>
           </provider>
         </entry>
@@ -76,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-244">
-              <caret line="88" column="89" selection-start-line="88" selection-start-column="89" selection-end-line="88" selection-end-column="89" />
+            <state relative-caret-position="358">
+              <caret line="130" column="92" selection-start-line="130" selection-start-column="92" selection-end-line="130" selection-end-column="92" />
               <folding>
                 <element signature="e#1519#1520#0" expanded="true" />
                 <element signature="e#1545#1546#0" expanded="true" />
@@ -109,11 +109,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
+            <state relative-caret-position="228">
+              <caret line="24" column="27" lean-forward="true" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -152,13 +152,13 @@
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EERC721/EERC721.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EERC721.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/config/Config.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/config/UserConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/AddressUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/EnrollmentUser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java" />
       </list>
     </option>
   </component>
@@ -183,7 +183,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1041" />
     <option name="y" value="187" />
     <option name="width" value="1606" />
@@ -462,10 +462,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1041" y="187" width="1606" height="955" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1052" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2244502" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18496802" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -474,7 +474,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4980595" visible="true" weight="0.3459196" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4980595" visible="true" weight="0.3093682" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -490,7 +490,7 @@
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.26067272" />
+      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.21481876" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -621,19 +621,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-244">
-          <caret line="88" column="89" selection-start-line="88" selection-start-column="89" selection-end-line="88" selection-end-column="89" />
-          <folding>
-            <element signature="e#1519#1520#0" expanded="true" />
-            <element signature="e#1545#1546#0" expanded="true" />
-            <element signature="e#1598#1599#0" expanded="true" />
-            <element signature="e#1637#1638#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/AddressUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -681,19 +668,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="255" selection-start-line="255" selection-end-line="255" />
+        <state relative-caret-position="228">
+          <caret line="24" column="27" lean-forward="true" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/user/UserContext.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/chaincode/ERC721.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
+        <state relative-caret-position="337">
+          <caret line="255" lean-forward="true" selection-start-line="255" selection-end-line="255" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/poscoict/posledger/chain/assets/client/ChannelClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="130" column="92" selection-start-line="130" selection-start-column="92" selection-end-line="130" selection-end-column="92" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#1519#1520#0" expanded="true" />
+            <element signature="e#1545#1546#0" expanded="true" />
+            <element signature="e#1598#1599#0" expanded="true" />
+            <element signature="e#1637#1638#0" expanded="true" />
           </folding>
         </state>
       </provider>

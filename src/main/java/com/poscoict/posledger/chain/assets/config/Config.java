@@ -1,6 +1,10 @@
 package com.poscoict.posledger.chain.assets.config;
 
 public class Config {
+
+	private Config() {
+
+	}
 	
 	private static String ORG1_MSP;
 

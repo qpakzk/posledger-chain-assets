@@ -21,7 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class AddressUtils {
 
     private AddressUtils() {
-        
+        throw new IllegalStateException("Utility class");
     }
 
     static boolean isValidAddress(String address) {

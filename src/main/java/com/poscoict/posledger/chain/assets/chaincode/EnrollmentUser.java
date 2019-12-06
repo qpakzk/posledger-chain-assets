@@ -159,7 +159,7 @@ public class EnrollmentUser {
             wallet.put(this.userID, user);
             Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, "Successfully enrolled user " + getUserID());
         } catch(Exception e) {
-
+            Logger.getLogger(EnrollmentUser.class.getName()).log(Level.INFO, e.getMessage());
         }
 
         return enrollment;

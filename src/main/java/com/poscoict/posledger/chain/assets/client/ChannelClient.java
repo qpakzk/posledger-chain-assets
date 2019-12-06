@@ -36,8 +36,17 @@ import org.hyperledger.fabric.sdk.exception.ProposalException;
 public class ChannelClient {
 
 	String name;
+	String functionName;
 	Channel channel;
 	FabricClient fabClient;
+
+	public String getFunctionName() {
+		return functionName;
+	}
+
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+	}
 
 	public String getName() {
 		return name;
@@ -74,10 +83,11 @@ public class ChannelClient {
 	 * @throws InvalidArgumentException
 	 * @throws ProposalException
 	 */
-	public Collection<ProposalResponse> queryByChainCode(String chaincodeName, String functionName, String[] args)
-			throws InvalidArgumentException, ProposalException {
-		Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO,
-				"Querying " + functionName + " on channel " + channel.getName());
+	public Collection<ProposalResponse> queryByChainCode(String chaincodeName, String functionName, String[] args) throws InvalidArgumentException, ProposalException {
+
+		setFunctionName(functionName);
+		Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, getFunctionName() + " on channel " + channel.getName());
+
 		QueryByChaincodeRequest request = fabClient.getInstance().newQueryProposalRequest();
 		ChaincodeID ccid = ChaincodeID.newBuilder().setName(chaincodeName).build();
 		request.setChaincodeID(ccid);

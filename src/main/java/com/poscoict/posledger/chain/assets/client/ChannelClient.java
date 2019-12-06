@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.poscoict.posledger.chain.assets.chaincode.ERC721;
 import org.hyperledger.fabric.sdk.BlockEvent.TransactionEvent;
 import org.hyperledger.fabric.sdk.ChaincodeID;
 import org.hyperledger.fabric.sdk.Channel;
@@ -108,8 +109,9 @@ public class ChannelClient {
 	 * @throws ProposalException
 	 * @throws InvalidArgumentException
 	 */
-	public Collection<ProposalResponse> sendTransactionProposal(TransactionProposalRequest request)
-			throws ProposalException, InvalidArgumentException {
+	public Collection<ProposalResponse> sendTransactionProposal(TransactionProposalRequest request) throws ProposalException, InvalidArgumentException {
+
+		CompletableFuture<TransactionEvent> cf;
 		Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO,
 				"Sending transaction proposal on channel " + channel.getName());
 
@@ -122,9 +124,11 @@ public class ChannelClient {
 			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO,stringResponse);
 		}
 
-		CompletableFuture<TransactionEvent> cf = channel.sendTransaction(response);
-		if(cf != null) {
+		try {
+			cf = channel.sendTransaction(response);
 			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, cf.toString());
+		} catch (Exception e) {
+			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, e.getMessage());
 		}
 
 		return response;

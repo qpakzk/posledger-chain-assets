@@ -6,6 +6,8 @@ import org.hyperledger.fabric.sdk.*;
 import com.poscoict.posledger.chain.assets.client.ChannelClient;
 import com.poscoict.posledger.chain.assets.client.FabricClient;
 import com.poscoict.posledger.chain.assets.user.UserContext;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
+import org.hyperledger.fabric.sdk.exception.TransactionException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,7 +98,7 @@ public class UserConfig {
         return fabClient;
     }
 
-    public static ChannelClient initChannel() throws Exception {
+    public static ChannelClient initChannel() throws InvalidArgumentException, TransactionException {
 
         try {
             fabClient = new FabricClient(userContextForOwner);

@@ -126,7 +126,8 @@ public class ChannelClient {
 
 		try {
 			cf = channel.sendTransaction(response);
-			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, cf.toString());
+			String result = cf.toString();
+			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, result);
 		} catch (Exception e) {
 			Logger.getLogger(ChannelClient.class.getName()).log(Level.INFO, e.getMessage());
 		}

@@ -18,10 +18,10 @@ public class UserContext implements User, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	protected String name;
-	transient private Set<String> roles;
+	protected Set<String> roles;
 	protected String account;
 	protected String affiliation;
-	transient protected Enrollment enrollment;
+	protected Enrollment enrollment;
 	protected String mspId;
 	
 	public void setName(String name) {

@@ -16,16 +16,18 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.poscoict.posledger.chain.assets.chaincode.AddressUtils.*;
+
 public class ERC721 {
-    
+
+
+
     public String register(String tokenId) {
 
         String result = "";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            String addr = getOwnerAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
             FabricClient fabClient = UserConfig.getFabClient();
@@ -56,9 +58,7 @@ public class ERC721 {
         String result = "";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            String addr = getOwnerAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
 
@@ -101,12 +101,9 @@ public class ERC721 {
         String result = "";
         try {
 
-
             UserConfig.initUserContextForOwner();
 
-            UserContext userContext = UserConfig.initUserContextForApproved();
-            X509Identity identity = new X509Identity(userContext);
-            String addrApproved = AddressUtils.getMyAddress(identity);
+            String addrApproved = getApprovedAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
             FabricClient fabClient = UserConfig.getFabClient();
@@ -161,9 +158,7 @@ public class ERC721 {
 
             UserConfig.initUserContextForOwner();
 
-            UserContext userContext = UserConfig.initUserContextForOperator();
-            X509Identity identity = new X509Identity(userContext);
-            String addrOperator = AddressUtils.getMyAddress(identity);
+            String addrOperator = getOperatorAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
             FabricClient fabClient = UserConfig.getFabClient();
@@ -194,13 +189,8 @@ public class ERC721 {
         String result = "";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
-
-            userContext = UserConfig.initUserContextForOperator();
-            identity = new X509Identity(userContext);
-            String addrOperator = AddressUtils.getMyAddress(identity);
+            String addr = getOwnerAddress();
+            String addrOperator = getOperatorAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
 
@@ -222,13 +212,8 @@ public class ERC721 {
         String result = "";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
-
-            userContext = UserConfig.initUserContextForNewOwner();
-            identity = new X509Identity(userContext);
-            String newOwnerAddr = AddressUtils.getMyAddress(identity);
+            String addr = getOwnerAddress();
+            String newOwnerAddr = getNewOwnerAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
             FabricClient fabClient = UserConfig.getFabClient();

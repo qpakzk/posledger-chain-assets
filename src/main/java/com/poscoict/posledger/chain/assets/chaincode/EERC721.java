@@ -13,6 +13,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.poscoict.posledger.chain.assets.chaincode.AddressUtils.getOwnerAddress;
+
 public class EERC721 {
 
 
@@ -21,9 +23,7 @@ public class EERC721 {
         String result = "";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            String addr = getOwnerAddress();
 
             ChannelClient channelClient = UserConfig.initChannel();
             FabricClient fabClient = UserConfig.getFabClient();
@@ -55,10 +55,7 @@ public class EERC721 {
         String result = "";
         try {
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
-
+            String addr = getOwnerAddress();
             ChannelClient channelClient = UserConfig.initChannel();
 
             Thread.sleep(1000);

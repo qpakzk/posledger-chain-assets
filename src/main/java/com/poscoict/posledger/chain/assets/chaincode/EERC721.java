@@ -1,217 +1,354 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
-import org.hyperledger.fabric.sdk.*;
-import org.hyperledger.fabric.sdk.identity.X509Identity;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
+import com.poscoict.posledger.chain.fabric.FabricService;
+import com.poscoict.posledger.chain.model.ChaincodeRequest;
+import org.hyperledger.fabric.sdk.ProposalResponse;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
-import com.poscoict.posledger.chain.assets.client.ChannelClient;
-import com.poscoict.posledger.chain.assets.client.FabricClient;
-import com.poscoict.posledger.chain.assets.config.Config;
-import com.poscoict.posledger.chain.assets.config.UserConfig;
-import com.poscoict.posledger.chain.assets.user.UserContext;
+import org.apache.logging.log4j.LogManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.annotation.Resource;
 
+@Resource
 public class EERC721 {
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(EERC721.class);
+
+    private static String chaincodeId = "assetscc";
 
 
-    public String register(String tokenId, String type, int pages, String hash, String signers, String path, String pathHash) {
+    private static final String MINT_FUNCTION_NAME = "mint";
 
-        String result = "";
+    private static final String BALANCE_OF_FUNCTION_NAME = "balanceOf";
+
+    private static final String TOKEN_IDS_OF_FUNCTION_NAME = "tokenIdsOf";
+
+    private static final String DIVIDE_FUNCTION_NAME = "divide";
+
+    private static final String UPDATE_FUNCTION_NAME = "setXAttr";
+
+    private static final String DEACTIVATE_FUNCTION_NAME = "deactivate";
+
+    private static final String QUERY_FUNCTION_NAME = "query";
+
+    private static final String QUERY_HISTORY_FUNCTION_NAME = "queryHistory";
+
+    private static final String SUCCESS = "SUCCESS";
+
+    private ChaincodeProxy chaincodeProxy;
+
+    private ObjectMapper objectMapper;
+
+    private FabricService fabricService;
+
+    @Autowired
+    private ERC721 erc721;
+
+    public EERC721() {}
+
+    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
+        this.chaincodeProxy = chaincodeProxy;
+        this.objectMapper = objectMapper;
+    }
+
+    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper, FabricService fabricService) {
+        this.chaincodeProxy = chaincodeProxy;
+        this.objectMapper = objectMapper;
+        this.fabricService = fabricService;
+    }
+
+    public EERC721(ChaincodeProxy chaincodeProxy) {
+        this.chaincodeProxy = chaincodeProxy;
+    }
+
+
+    private String caller;
+
+    public void setCaller(String caller) {
+        this.caller = caller;
+    }
+
+    public boolean mint(BigInteger tokenId, String type, String owner, int pages, String hash, String signers, String path, String merkleroot) throws Exception {
+        logger.info("---------------- mint SDK called ----------------");
+
+        String status = null;
+        boolean result = false;
+
         try {
+            if (!caller.equals(owner)) {
+                return false;
+            }
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(MINT_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
+            chaincodeRequest.setArgs(new String[] { tokenId.toString(), type, owner, Integer.toString(pages), hash, signers, path, merkleroot });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("mint");
-            String[] arguments = { tokenId, type, addr, Integer.toString(pages), hash, signers, path, pathHash};
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = response.getStatus().toString();
+                }
+            }
 
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
-
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"mint on "+Config.getChannelName());
-                result = res.getMessage();
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
             }
 
         } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());        
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String balanceOf(String type) {
+    public BigInteger balanceOf(String owner, String type) throws Exception {
+        logger.info("---------------- balanceOf SDK called ----------------");
 
-        String result = "";
+        BigInteger balanceBigInt = null;
+
         try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(BALANCE_OF_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { owner, type });
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "balanceOf", new String[]{addr, type});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(EERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    String balance =  response.getMessage();
+                    int balanceInt = Integer.parseInt(balance);
+                    balanceBigInt = BigInteger.valueOf(balanceInt);
+                }
             }
 
         } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
+        }
+
+        logger.info("balance: " + balanceBigInt.toString());
+        return balanceBigInt;
+    }
+
+    public List<BigInteger> tokenIdsOf(String owner) throws Exception {
+        logger.info("---------------- tokenIdsOf SDK called ----------------");
+
+        List<BigInteger> tokenIds = new ArrayList<BigInteger>();
+        String result = null;
+
+        try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(TOKEN_IDS_OF_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { owner });
+
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    result =  response.getMessage();
+                }
+            }
+
+            result = result.substring(1);
+            result = result.substring(0, result.length() - 1);
+
+            String[] string = result.split(", ");
+            BigInteger[] bigInt = new BigInteger[string.length];
+            for (int i = 0; i < string.length; i++) {
+                int n = Integer.parseInt(string[i]);
+                bigInt[i] = BigInteger.valueOf(n);
+            }
+            tokenIds = Arrays.asList(bigInt);
+
+        } catch (Exception e) {
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
+        }
+
+        logger.info("balance: " + result);
+        return tokenIds;
+    }
+
+    public boolean deactivate(BigInteger tokenId) throws Exception {
+        logger.info("---------------- deactivate SDK called ----------------");
+
+        String status = null;
+        boolean result = false;
+
+        try {
+            String owner = erc721.ownerOf(tokenId);
+            if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
+                return false;
+            }
+
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(DEACTIVATE_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+
+            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = response.getStatus().toString();
+                }
+            }
+
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
+            }
+
+        } catch (Exception e) {
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String deactivate(String tokenId) {
+    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws Exception {
+        logger.info("---------------- divide SDK called ----------------");
 
-        String result = "";
+        String status = null;
+        boolean result = false;
+
         try {
+            String owner = erc721.ownerOf(tokenId);
+            if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
+                return false;
+            }
 
-            UserConfig.initUserContextForOwner();
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(DIVIDE_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
+            chaincodeRequest.setArgs(new String[] { tokenId.toString(),  Arrays.toString(newIds), Arrays.toString(values), index });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            
-            request.setFcn("deactivate");
-            String[] arguments = { tokenId };
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = response.getStatus().toString();
+                }
+            }
 
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"deactivated on "+Config.getChannelName());
-                result = res.getMessage();
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
             }
 
         } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String divide(String tokenId, String[] newIds, String[] values, int index) {
+    public boolean update(BigInteger tokenId, String index, String attr) throws Exception {
+        logger.info("---------------- update SDK called ----------------");
 
-        String result = "";
+        String status = null;
+        boolean result = false;
+
         try {
+            String owner = erc721.ownerOf(tokenId);
+            if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
+                return false;
+            }
 
-            UserConfig.initUserContextForOwner();
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(UPDATE_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
+            chaincodeRequest.setArgs(new String[] { tokenId.toString(), index, attr });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("divide");
-            String[] arguments = { tokenId,  Arrays.toString(newIds), Arrays.toString(values), Integer.toString(index) };
-            
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = response.getStatus().toString();
+                }
+            }
 
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"divided on "+Config.getChannelName());
-                result = res.getMessage();
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
             }
 
         } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String update(String tokenId, String index, String attr) {
+    public String query(BigInteger tokenId) throws Exception {
+        logger.info("---------------- query SDK called ----------------");
 
-        String result = "";
+        String result = null;
+
         try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(QUERY_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
 
-            UserConfig.initUserContextForOwner();
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
-
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("setXAttr");
-            String[] arguments = { tokenId, index, attr };
-            
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
-
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"update on "+Config.getChannelName());
-                result = res.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    result =  response.getMessage();
+                }
             }
 
         } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
-        
+
+        logger.info("query: " + result);
         return result;
     }
 
-    public String query(String tokenId) {
+    public List<String> queryHistory(BigInteger tokenId) throws Exception {
+        logger.info("---------------- queryHistory SDK called ----------------");
 
-        String result = "";
+        List<String> histories = new ArrayList<String>();
+        String result = null;
+
         try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(QUERY_HISTORY_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
 
-            UserConfig.initUserContextForOwner();
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "query", new String[]{tokenId});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(EERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    result =  response.getMessage();
+                }
             }
 
+            result = result.substring(1);
+            result = result.substring(0, result.length() - 1);
+
+            histories = Arrays.asList(result.split(", "));
         } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
-        return result;
+        logger.info("query history: " + result);
+        return histories;
     }
-
-    public String queryHistory(String tokenId) {
-
-        String result = "";
-        try {
-            ChannelClient channelClient = UserConfig.initChannel();
-
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "queryHistory", new String[]{tokenId});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(EERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
-            }
-
-        } catch (Exception e) {
-            Logger.getLogger(EERC721.class.getName()).log(Level.INFO, e.getMessage());
-        }
-
-        return result;
-    }
-    
 }

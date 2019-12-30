@@ -1,256 +1,326 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
-import org.hyperledger.fabric.sdk.ChaincodeID;
-import org.hyperledger.fabric.sdk.ChaincodeResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
+import com.poscoict.posledger.chain.fabric.FabricService;
+import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.hyperledger.fabric.sdk.ProposalResponse;
-import org.hyperledger.fabric.sdk.TransactionProposalRequest;
-import org.hyperledger.fabric.sdk.identity.X509Identity;
-
-import com.poscoict.posledger.chain.assets.client.ChannelClient;
-import com.poscoict.posledger.chain.assets.client.FabricClient;
-import com.poscoict.posledger.chain.assets.config.Config;
-import com.poscoict.posledger.chain.assets.config.UserConfig;
-import com.poscoict.posledger.chain.assets.user.UserContext;
-
+import java.math.BigInteger;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Resource;
+
+@Resource
 public class ERC721 {
-    
-    public String register(String tokenId) {
+    private static final Logger logger = LogManager.getLogger(ERC721.class);
 
-        String result = "";
+    private static String chaincodeId = "assetscc";
+
+    private static final String MINT_FUNCTION_NAME = "mint";
+
+    private static final String BALANCE_OF_FUNCTION_NAME = "balanceOf";
+
+    private static final String OWNER_OF_FUNCTION_NAME = "ownerOf";
+
+    private static final String TRANSFER_FROM_FUNCTION_NAME = "transferFrom";
+
+    private static final String APPROVE_FUNCTION_NAME = "approve";
+
+    private static final String SET_APPROVAL_FOR_ALL_FUNCTION_NAME = "setApprovalForAll";
+
+    private static final String GET_APPROVED_FUNCTION_NAME = "getApproved";
+
+    private static final String IS_APPROVED_FOR_ALL_FUNCTION_NAME = "isApprovedForAll";
+
+    private static final String SUCCESS = "SUCCESS";
+
+    private ChaincodeProxy chaincodeProxy;
+
+    private ObjectMapper objectMapper;
+
+    private FabricService fabricService;
+
+    public ERC721() {}
+
+    public ERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
+        this.chaincodeProxy = chaincodeProxy;
+        this.objectMapper = objectMapper;
+    }
+
+    public ERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper, FabricService fabricService) {
+        this.chaincodeProxy = chaincodeProxy;
+        this.objectMapper = objectMapper;
+        this.fabricService = fabricService;
+    }
+
+    public ERC721(ChaincodeProxy chaincodeProxy) {
+        this.chaincodeProxy = chaincodeProxy;
+    }
+
+
+    private String caller;
+
+    public void setCaller(String caller) {
+        this.caller = caller;
+    }
+
+
+    public boolean mint(BigInteger tokenId, String owner) throws Exception {
+        logger.info("---------------- mint SDK called ----------------");
+
+        String status = null;
+        boolean result = false;
+
         try {
+            if (!caller.equals(owner)) {
+                return false;
+            }
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(MINT_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
+            chaincodeRequest.setArgs(new String[] { tokenId.toString(), owner });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("mint");
-            String[] arguments = { tokenId, addr};
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = response.getStatus().toString();
+                }
+            }
 
-            request.setArgs(arguments);
-            
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"mint on "+Config.getChannelName());
-                result = res.getMessage();
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
             }
 
         } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String balanceOf() {
+    public BigInteger balanceOf(String owner) throws Exception {
+        logger.info("---------------- balanceOf SDK called ----------------");
 
-        String result = "";
+        BigInteger balanceBigInt = null;
+
         try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(BALANCE_OF_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { owner });
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
 
-            ChannelClient channelClient = UserConfig.initChannel();
-
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "balanceOf", new String[]{addr});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    String balance =  response.getMessage();
+                    int balanceInt = Integer.parseInt(balance);
+                    balanceBigInt = BigInteger.valueOf(balanceInt);
+                }
             }
 
         } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
+        }
+
+        logger.info("balance: " + balanceBigInt.toString());
+        return balanceBigInt;
+    }
+
+    public String ownerOf(BigInteger tokenId) throws Exception {
+        logger.info("---------------- ownerOf SDK called ----------------");
+
+        String owner = null;
+
+        try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(OWNER_OF_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
+
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    owner =  response.getMessage();
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
+        }
+
+        logger.info("owner: " + owner);
+        return owner;
+    }
+
+
+    public boolean transferFrom(String from, String to, BigInteger tokenId) throws Exception {
+        logger.info("---------------- transferFrom SDK called ----------------");
+
+        String status = null;
+        boolean result = false;
+        try {
+            String owner = ownerOf(tokenId);
+            String approved = getApproved(tokenId);
+            if(!(caller.equals(owner) || isApprovedForAll(owner, caller) || caller.equals(approved))) {
+                return false;
+            }
+
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(TRANSFER_FROM_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+
+            chaincodeRequest.setArgs(new String[] { from, to, tokenId.toString() });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = (response.getStatus()).toString();
+                }
+            }
+
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
+            }
+
+        } catch (Exception e) {
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String ownerOf(String tokenId) {
+    public boolean approve(String approved, BigInteger tokenId) throws Exception {
+        logger.info("---------------- approve SDK called ----------------");
 
-        String result = "";
+        String status = null;
+        boolean result = false;
         try {
+            String owner = ownerOf(tokenId);
+            if(!(caller.equals(owner) || isApprovedForAll(owner, caller))) {
+                return false;
+            }
 
-            ChannelClient channelClient = UserConfig.initChannel();
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(APPROVE_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
 
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "ownerOf", new String[]{tokenId});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
+            chaincodeRequest.setArgs(new String[] { approved, tokenId.toString() });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = (response.getStatus()).toString();
+                }
+            }
+
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
             }
 
         } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String approve(String tokenId) {
-        String result = "";
+    public boolean setApprovalForAll(String operator, boolean approved) throws Exception {
+        logger.info("---------------- setApprovalForAll SDK called ----------------");
+
+        String status = null;
+        boolean result = false;
         try {
-
-
-            UserConfig.initUserContextForOwner();
-
-            UserContext userContext = UserConfig.initUserContextForApproved();
-            X509Identity identity = new X509Identity(userContext);
-            String addrApproved = AddressUtils.getMyAddress(identity);
-
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
-
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("approve");
-            String[] arguments = { addrApproved, tokenId };
-
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
-            
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"approve on "+Config.getChannelName());
-                result = res.getMessage();
+            if (caller.equals(operator)) {
+                return false;
             }
 
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(SET_APPROVAL_FOR_ALL_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
 
-        } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
-        }
-        return result;
-    }
+            chaincodeRequest.setArgs(new String[] { caller, operator, Boolean.toString(approved) });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
-    public String getApproved(String tokenId) {
-
-        String result="";
-        try {
-
-            UserConfig.initUserContextForOwner();
-
-            ChannelClient channelClient = UserConfig.initChannel();
-
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "getApproved", new String[]{tokenId});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = (response.getStatus()).toString();
+                }
             }
+
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
+            }
+
         } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
         return result;
     }
 
-    public String setApprovalForAll(String approved) {
-        String result = "";
+    public String getApproved(BigInteger tokenId) throws Exception {
+        logger.info("---------------- getApproved SDK called ----------------");
+
+        String approved = null;
+
         try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(GET_APPROVED_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
 
-            UserConfig.initUserContextForOwner();
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
 
-            UserContext userContext = UserConfig.initUserContextForOperator();
-            X509Identity identity = new X509Identity(userContext);
-            String addrOperator = AddressUtils.getMyAddress(identity);
-
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
-
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("setApprovalForAll");
-            String[] arguments = { addrOperator , approved};
-
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
-            
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"setApprovalForAll on "+Config.getChannelName());
-                result = res.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    approved =  response.getMessage();
+                }
             }
 
-
         } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
-        return result;
+
+        return approved;
     }
 
-    public String isApprovedForAll() {
-        String result = "";
+    public boolean isApprovedForAll(String owner, String operator) throws Exception {
+        logger.info("---------------- isApprovedForAll SDK called ----------------");
+
+        boolean result = false;
+
         try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(IS_APPROVED_FOR_ALL_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { owner, operator });
 
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
 
-            userContext = UserConfig.initUserContextForOperator();
-            identity = new X509Identity(userContext);
-            String addrOperator = AddressUtils.getMyAddress(identity);
-
-            ChannelClient channelClient = UserConfig.initChannel();
-
-            Thread.sleep(1000);
-            Collection<ProposalResponse> responses1Query = channelClient.queryByChainCode(Config.getChannelName(), "isApprovedForAll", new String[]{addr, addrOperator});
-            for (ProposalResponse pres : responses1Query) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO, pres.getMessage());
-                result = pres.getMessage();
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    result = Boolean.parseBoolean(response.getMessage());
+                }
             }
 
         } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
+            logger.error(e);
+            throw new Exception(e.getLocalizedMessage());
         }
 
-        return result;
-    }
-
-    public String transfer(String tokenId) {
-        String result = "";
-        try {
-
-            UserContext userContext = UserConfig.initUserContextForOwner();
-            X509Identity identity = new X509Identity(userContext);
-            String addr = AddressUtils.getMyAddress(identity);
-
-            userContext = UserConfig.initUserContextForNewOwner();
-            identity = new X509Identity(userContext);
-            String newOwnerAddr = AddressUtils.getMyAddress(identity);
-
-            ChannelClient channelClient = UserConfig.initChannel();
-            FabricClient fabClient = UserConfig.getFabClient();
-
-            TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
-            ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.getChannelName()).build();
-            request.setChaincodeID(ccid);
-            request.setFcn("transferFrom");
-            String[] arguments = { addr, newOwnerAddr , tokenId};
-
-            request.setArgs(arguments);
-            request.setProposalWaitTime(1000);
-            
-            Collection<ProposalResponse> responses = channelClient.sendTransactionProposal(request);
-            for (ProposalResponse res: responses) {
-                Logger.getLogger(ERC721.class.getName()).log(Level.INFO,"transfer on "+Config.getChannelName());
-                result = res.getMessage();
-            }
-
-        } catch (Exception e) {
-            Logger.getLogger(ERC721.class.getName()).log(Level.INFO, e.getMessage());
-        }
         return result;
     }
 

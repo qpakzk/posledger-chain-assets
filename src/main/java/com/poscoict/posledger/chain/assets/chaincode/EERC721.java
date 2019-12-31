@@ -90,7 +90,7 @@ public class EERC721 {
                 result = true;
             }
 
-        } catch (ProposalException e) {//Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
@@ -171,7 +171,7 @@ public class EERC721 {
         return tokenIds;
     }
 
-    public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException, Exception {
+    public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- deactivate SDK called ----------------");
 
         String status = null;
@@ -208,7 +208,7 @@ public class EERC721 {
         return result;
     }
 
-    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException, Exception {
+    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- divide SDK called ----------------");
 
         String status = null;
@@ -245,7 +245,7 @@ public class EERC721 {
         return result;
     }
 
-    public boolean update(BigInteger tokenId, String index, String attr) throws ProposalException, InvalidArgumentException, Exception {
+    public boolean update(BigInteger tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- update SDK called ----------------");
 
         String status = null;
@@ -342,7 +342,7 @@ public class EERC721 {
             throw new ProposalException(e);
         }
 
-        logger.info("query history: " + result);
+        logger.info("query history {}", result);
         return histories;
     }
 }

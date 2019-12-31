@@ -150,7 +150,7 @@ public class ERC721 {
     }
 
 
-    public boolean transferFrom(String from, String to, BigInteger tokenId) throws ProposalException, InvalidArgumentException, Exception {
+    public boolean transferFrom(String from, String to, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- transferFrom SDK called ----------------");
 
         String status = null;
@@ -187,7 +187,7 @@ public class ERC721 {
         return result;
     }
 
-    public boolean approve(String approved, BigInteger tokenId) throws ProposalException, InvalidArgumentException, Exception {
+    public boolean approve(String approved, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- approve SDK called ----------------");
 
         String status = null;

@@ -167,7 +167,7 @@ public class EERC721 {
             throw new ProposalException(e);
         }
 
-        logger.info("balance: " + result);
+        logger.info("balance {}", result);
         return tokenIds;
     }
 
@@ -306,7 +306,7 @@ public class EERC721 {
             throw new ProposalException(e);
         }
 
-        logger.info("query: " + result);
+        logger.info("query {}", result);
         return result;
     }
 

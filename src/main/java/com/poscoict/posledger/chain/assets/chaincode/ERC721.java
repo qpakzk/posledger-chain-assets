@@ -145,7 +145,7 @@ public class ERC721 {
             throw new ProposalException(e);
         }
 
-        logger.info("owner: " + owner);
+        logger.info("owner {}", owner);
         return owner;
     }
 

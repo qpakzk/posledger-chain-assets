@@ -169,6 +169,48 @@ public class EERC721 {
         logger.info("balance {}", result);
         return tokenIds;
     }
+    
+    public List<BigInteger> tokenIdsOf(String owner, String type) throws ProposalException, InvalidArgumentException {
+        logger.info("---------------- tokenIdsOf SDK called ----------------");
+
+        List<BigInteger> tokenIds = new ArrayList<BigInteger>();
+        String result = null;
+
+        try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(TOKEN_IDS_OF_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+            chaincodeRequest.setArgs(new String[] { owner, type });
+
+            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    result =  response.getMessage();
+                }
+            }
+
+            if(result != null) {
+                result = result.substring(1);
+                result = result.substring(0, result.length() - 1);
+
+                String[] string = result.split(", ");
+                BigInteger[] bigInt = new BigInteger[string.length];
+                for (int i = 0; i < string.length; i++) {
+                    int n = Integer.parseInt(string[i]);
+                    bigInt[i] = BigInteger.valueOf(n);
+                }
+                tokenIds = Arrays.asList(bigInt);
+            }
+
+        } catch (ProposalException e) {
+            logger.error(e);
+            throw new ProposalException(e);
+        }
+
+        logger.info("balance {}", result);
+        return tokenIds;
+    }
 
     public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- deactivate SDK called ----------------");

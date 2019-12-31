@@ -124,7 +124,6 @@ public class EERC721 {
             throw new ProposalException(e);
         }
 
-        //if(balanceBigInt != null)
         logger.info("balance {}", balanceBigInt);
         return balanceBigInt;
     }

@@ -166,10 +166,10 @@ public class EERC721 {
             throw new ProposalException(e);
         }
 
-        logger.info("balance {}", result);
+        logger.info("tokenIds {}", result);
         return tokenIds;
     }
-    
+
     public List<BigInteger> tokenIdsOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- tokenIdsOf SDK called ----------------");
 
@@ -208,7 +208,7 @@ public class EERC721 {
             throw new ProposalException(e);
         }
 
-        logger.info("balance {}", result);
+        logger.info("tokenIds {}", result);
         return tokenIds;
     }
 

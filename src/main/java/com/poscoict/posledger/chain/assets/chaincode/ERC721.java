@@ -116,8 +116,8 @@ public class ERC721 {
             throw new ProposalException(e);
         }
 
-        if(balanceBigInt != null)
-            logger.info("balance: " + balanceBigInt.toString());
+        //if(balanceBigInt != null)
+        logger.info("balance: {}", balanceBigInt);
         return balanceBigInt;
     }
 

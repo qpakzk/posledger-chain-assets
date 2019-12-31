@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
+import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
@@ -43,30 +45,16 @@ public class EERC721 {
 
     private ChaincodeProxy chaincodeProxy;
 
-    private ObjectMapper objectMapper;
 
-    private FabricService fabricService;
 
     @Autowired
     private ERC721 erc721;
 
     public EERC721() {}
 
-    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
-    }
-
-    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper, FabricService fabricService) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
-        this.fabricService = fabricService;
-    }
-
     public EERC721(ChaincodeProxy chaincodeProxy) {
         this.chaincodeProxy = chaincodeProxy;
     }
-
 
     private String caller;
 
@@ -74,7 +62,7 @@ public class EERC721 {
         this.caller = caller;
     }
 
-    public boolean mint(BigInteger tokenId, String type, String owner, int pages, String hash, String signers, String path, String merkleroot) throws Exception {
+    public boolean mint(BigInteger tokenId, String type, String owner, int pages, String hash, String signers, String path, String merkleroot) throws InvalidArgumentException, ProposalException {
         logger.info("---------------- mint SDK called ----------------");
 
         String status = null;
@@ -102,15 +90,15 @@ public class EERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {//Exception e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public BigInteger balanceOf(String owner, String type) throws Exception {
+    public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
         BigInteger balanceBigInt = null;
@@ -131,16 +119,17 @@ public class EERC721 {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
-        logger.info("balance: " + balanceBigInt.toString());
+        if(balanceBigInt != null)
+            logger.info("balance: " + balanceBigInt.toString());
         return balanceBigInt;
     }
 
-    public List<BigInteger> tokenIdsOf(String owner) throws Exception {
+    public List<BigInteger> tokenIdsOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- tokenIdsOf SDK called ----------------");
 
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
@@ -160,27 +149,29 @@ public class EERC721 {
                 }
             }
 
-            result = result.substring(1);
-            result = result.substring(0, result.length() - 1);
+            if(result != null) {
+                result = result.substring(1);
+                result = result.substring(0, result.length() - 1);
 
-            String[] string = result.split(", ");
-            BigInteger[] bigInt = new BigInteger[string.length];
-            for (int i = 0; i < string.length; i++) {
-                int n = Integer.parseInt(string[i]);
-                bigInt[i] = BigInteger.valueOf(n);
+                String[] string = result.split(", ");
+                BigInteger[] bigInt = new BigInteger[string.length];
+                for (int i = 0; i < string.length; i++) {
+                    int n = Integer.parseInt(string[i]);
+                    bigInt[i] = BigInteger.valueOf(n);
+                }
+                tokenIds = Arrays.asList(bigInt);
             }
-            tokenIds = Arrays.asList(bigInt);
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         logger.info("balance: " + result);
         return tokenIds;
     }
 
-    public boolean deactivate(BigInteger tokenId) throws Exception {
+    public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException, Exception {
         logger.info("---------------- deactivate SDK called ----------------");
 
         String status = null;
@@ -209,15 +200,15 @@ public class EERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws Exception {
+    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException, Exception {
         logger.info("---------------- divide SDK called ----------------");
 
         String status = null;
@@ -246,15 +237,15 @@ public class EERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public boolean update(BigInteger tokenId, String index, String attr) throws Exception {
+    public boolean update(BigInteger tokenId, String index, String attr) throws ProposalException, InvalidArgumentException, Exception {
         logger.info("---------------- update SDK called ----------------");
 
         String status = null;
@@ -283,15 +274,15 @@ public class EERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public String query(BigInteger tokenId) throws Exception {
+    public String query(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- query SDK called ----------------");
 
         String result = null;
@@ -310,16 +301,16 @@ public class EERC721 {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         logger.info("query: " + result);
         return result;
     }
 
-    public List<String> queryHistory(BigInteger tokenId) throws Exception {
+    public List<String> queryHistory(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- queryHistory SDK called ----------------");
 
         List<String> histories = new ArrayList<String>();
@@ -339,13 +330,16 @@ public class EERC721 {
                 }
             }
 
-            result = result.substring(1);
-            result = result.substring(0, result.length() - 1);
+            if(result != null) {
+                result = result.substring(1);
+                result = result.substring(0, result.length() - 1);
 
-            histories = Arrays.asList(result.split(", "));
-        } catch (Exception e) {
+                histories = Arrays.asList(result.split(", "));
+            }
+
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         logger.info("query history: " + result);

@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.util.Collection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
+import org.hyperledger.fabric.sdk.exception.ProposalException;
 
 import javax.annotation.Resource;
 
@@ -38,27 +40,12 @@ public class ERC721 {
 
     private ChaincodeProxy chaincodeProxy;
 
-    private ObjectMapper objectMapper;
-
-    private FabricService fabricService;
 
     public ERC721() {}
-
-    public ERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
-    }
-
-    public ERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper, FabricService fabricService) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
-        this.fabricService = fabricService;
-    }
 
     public ERC721(ChaincodeProxy chaincodeProxy) {
         this.chaincodeProxy = chaincodeProxy;
     }
-
 
     private String caller;
 
@@ -67,7 +54,7 @@ public class ERC721 {
     }
 
 
-    public boolean mint(BigInteger tokenId, String owner) throws Exception {
+    public boolean mint(BigInteger tokenId, String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- mint SDK called ----------------");
 
         String status = null;
@@ -95,15 +82,15 @@ public class ERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public BigInteger balanceOf(String owner) throws Exception {
+    public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
         BigInteger balanceBigInt = null;
@@ -124,16 +111,17 @@ public class ERC721 {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
-        logger.info("balance: " + balanceBigInt.toString());
+        if(balanceBigInt != null)
+            logger.info("balance: " + balanceBigInt.toString());
         return balanceBigInt;
     }
 
-    public String ownerOf(BigInteger tokenId) throws Exception {
+    public String ownerOf(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- ownerOf SDK called ----------------");
 
         String owner = null;
@@ -152,9 +140,9 @@ public class ERC721 {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         logger.info("owner: " + owner);
@@ -162,7 +150,7 @@ public class ERC721 {
     }
 
 
-    public boolean transferFrom(String from, String to, BigInteger tokenId) throws Exception {
+    public boolean transferFrom(String from, String to, BigInteger tokenId) throws ProposalException, InvalidArgumentException, Exception {
         logger.info("---------------- transferFrom SDK called ----------------");
 
         String status = null;
@@ -191,15 +179,15 @@ public class ERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public boolean approve(String approved, BigInteger tokenId) throws Exception {
+    public boolean approve(String approved, BigInteger tokenId) throws ProposalException, InvalidArgumentException, Exception {
         logger.info("---------------- approve SDK called ----------------");
 
         String status = null;
@@ -227,15 +215,15 @@ public class ERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public boolean setApprovalForAll(String operator, boolean approved) throws Exception {
+    public boolean setApprovalForAll(String operator, boolean approved) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setApprovalForAll SDK called ----------------");
 
         String status = null;
@@ -262,15 +250,15 @@ public class ERC721 {
                 result = true;
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;
     }
 
-    public String getApproved(BigInteger tokenId) throws Exception {
+    public String getApproved(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getApproved SDK called ----------------");
 
         String approved = null;
@@ -289,15 +277,15 @@ public class ERC721 {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return approved;
     }
 
-    public boolean isApprovedForAll(String owner, String operator) throws Exception {
+    public boolean isApprovedForAll(String owner, String operator) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- isApprovedForAll SDK called ----------------");
 
         boolean result = false;
@@ -316,9 +304,9 @@ public class ERC721 {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (ProposalException e) {
             logger.error(e);
-            throw new Exception(e.getLocalizedMessage());
+            throw new ProposalException(e);
         }
 
         return result;

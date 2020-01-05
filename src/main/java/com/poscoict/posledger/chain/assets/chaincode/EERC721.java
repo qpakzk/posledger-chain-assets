@@ -2,14 +2,10 @@ package com.poscoict.posledger.chain.assets.chaincode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import com.poscoict.posledger.chain.fabric.FabricService;
 import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.hyperledger.fabric.sdk.ProposalResponse;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -24,6 +20,7 @@ public class EERC721 {
 
     private static String chaincodeId = "assetscc";
 
+    private static final String REGISTER_TOKEN_TYPE_FUNCTION_NAME = "registerTokenType";
 
     private static final String MINT_FUNCTION_NAME = "mint";
 
@@ -45,7 +42,7 @@ public class EERC721 {
 
     private ChaincodeProxy chaincodeProxy;
 
-
+    private ObjectMapper objectMapper;
 
     @Autowired
     private ERC721 erc721;
@@ -56,13 +53,51 @@ public class EERC721 {
         this.chaincodeProxy = chaincodeProxy;
     }
 
+    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
+        this.chaincodeProxy = chaincodeProxy;
+        this.objectMapper = objectMapper;
+    }
+
     private String caller;
 
     public void setCaller(String caller) {
         this.caller = caller;
     }
 
-    public boolean mint(BigInteger tokenId, String type, String owner, int pages, String hash, String signers, String path, String merkleroot) throws InvalidArgumentException, ProposalException {
+    public boolean registerTokenType(String type, Map<String, List<String>> xattr) throws Exception {
+        logger.info("---------------- registerTokenType SDK called ----------------");
+
+        String status = null;
+        boolean result = false;
+
+        try {
+            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
+            chaincodeRequest.setFunctionName(REGISTER_TOKEN_TYPE_FUNCTION_NAME);
+            chaincodeRequest.setChaincodeName(chaincodeId);
+
+            String json = objectMapper.writeValueAsString(xattr);
+            chaincodeRequest.setArgs(new String[] { type, json });
+            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
+
+            for (ProposalResponse response : responses) {
+                if (response.getChaincodeActionResponsePayload() != null) {
+                    status = response.getStatus().toString();
+                }
+            }
+
+            if (status != null && status.equals(SUCCESS)) {
+                result = true;
+            }
+
+        } catch (ProposalException e) {
+            logger.error(e);
+            throw new ProposalException(e);
+        }
+
+        return result;
+    }
+
+    public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws Exception {
         logger.info("---------------- mint SDK called ----------------");
 
         String status = null;
@@ -77,7 +112,9 @@ public class EERC721 {
             chaincodeRequest.setFunctionName(MINT_FUNCTION_NAME);
             chaincodeRequest.setChaincodeName(chaincodeId);
 
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), type, owner, Integer.toString(pages), hash, signers, path, merkleroot });
+            String xattrJson = objectMapper.writeValueAsString(xattr);
+            String uriJson = objectMapper.writeValueAsString(uri);
+            chaincodeRequest.setArgs(new String[] { tokenId.toString(), type, owner, xattrJson, uriJson });
             Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
             for (ProposalResponse response : responses) {

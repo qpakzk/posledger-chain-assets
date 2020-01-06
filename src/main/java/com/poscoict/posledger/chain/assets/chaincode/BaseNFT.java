@@ -28,8 +28,6 @@ public class BaseNFT {
 
     private ChaincodeProxy chaincodeProxy;
 
-    private ObjectMapper objectMapper;
-
     @Autowired
     private ERC721 erc721;
 
@@ -37,11 +35,6 @@ public class BaseNFT {
 
     public BaseNFT(ChaincodeProxy chaincodeProxy) {
         this.chaincodeProxy = chaincodeProxy;
-    }
-
-    public BaseNFT(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
     }
 
     private String caller;
@@ -86,7 +79,7 @@ public class BaseNFT {
         return result;
     }
 
-    public boolean burn(BigInteger tokenId) throws Exception {
+    public boolean burn(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- burn SDK called ----------------");
 
         String status = null;
@@ -123,7 +116,7 @@ public class BaseNFT {
         return result;
     }
 
-    public String getType(BigInteger tokenId) throws Exception {
+    public String getType(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getType SDK called ----------------");
 
         String type = null;

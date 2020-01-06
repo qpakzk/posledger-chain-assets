@@ -1,13 +1,17 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.ProposalResponse;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 
+import java.io.IOException;
 import java.util.*;
 
 public class XType {
@@ -81,7 +85,7 @@ public class XType {
     }
 
 
-    public List<String> tokenTypesOf() throws Exception {
+    public List<String> tokenTypesOf() throws ProposalException, InvalidArgumentException {
         logger.info("---------------- tokenTypesOf SDK called ----------------");
 
         String tokenTypsString = null;
@@ -105,12 +109,16 @@ public class XType {
             throw new ProposalException(e);
         }
 
-        List<String> tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
-        logger.info("tokenTypesOf {}", tokenTypes.toString());
-        return tokenTypes;
+        if(tokenTypsString != null) {
+            List<String> tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
+            logger.info("tokenTypesOf {}", tokenTypes);
+            return tokenTypes;
+        }
+
+        return null;
     }
 
-    public Map<String, List<String>> getTokenType(String type) throws Exception {
+    public Map<String, List<String>> getTokenType(String type) throws ProposalException, InvalidArgumentException, IOException {
         logger.info("---------------- getTokenType SDK called ----------------");
 
         String json = null;

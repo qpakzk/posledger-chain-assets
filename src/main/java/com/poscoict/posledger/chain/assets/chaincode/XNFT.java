@@ -1,15 +1,19 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.ProposalResponse;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
 import java.util.*;
+
+import static sun.java2d.cmm.ColorTransform.In;
 
 public class XNFT {
 
@@ -56,7 +60,7 @@ public class XNFT {
         this.caller = caller;
     }
 
-    public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws Exception {
+    public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- mint SDK called ----------------");
 
         String status = null;
@@ -94,7 +98,7 @@ public class XNFT {
         return result;
     }
 
-    public boolean setURI(BigInteger tokenId, String index, String value) throws Exception {
+    public boolean setURI(BigInteger tokenId, String index, String value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setURI SDK called ----------------");
 
         String status = null;
@@ -131,7 +135,7 @@ public class XNFT {
         return result;
     }
 
-    public String getURI(BigInteger tokenId, String index) throws Exception {
+    public String getURI(BigInteger tokenId, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getURI SDK called ----------------");
 
         String value = null;
@@ -159,7 +163,7 @@ public class XNFT {
         return value;
     }
 
-    public boolean setXAttr(BigInteger tokenId, String index, Object value) throws Exception {
+    public boolean setXAttr(BigInteger tokenId, String index, Object value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setXAttr SDK called ----------------");
 
         String status = null;
@@ -196,7 +200,7 @@ public class XNFT {
         return result;
     }
 
-    public String getXAttr(BigInteger tokenId, String index) throws Exception {
+    public String getXAttr(BigInteger tokenId, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getXAttr SDK called ----------------");
 
         String value = null;

@@ -208,7 +208,7 @@ public class EERC721 {
         return result;
     }
 
-    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException {
+    public boolean divide(BigInteger tokenId, BigInteger[] newIds, List<Object> values, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- divide SDK called ----------------");
 
         String status = null;
@@ -224,7 +224,7 @@ public class EERC721 {
             chaincodeRequest.setFunctionName(DIVIDE_FUNCTION_NAME);
             chaincodeRequest.setChaincodeName(chaincodeId);
 
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(),  Arrays.toString(newIds), Arrays.toString(values), index });
+            chaincodeRequest.setArgs(new String[] { tokenId.toString(),  Arrays.toString(newIds), values.toString(), index });
             Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
 
             for (ProposalResponse response : responses) {

@@ -35,8 +35,6 @@ public class EERC721 {
 
     private ChaincodeProxy chaincodeProxy;
 
-    private ObjectMapper objectMapper;
-
     @Autowired
     private ERC721 erc721;
 
@@ -44,11 +42,6 @@ public class EERC721 {
 
     public EERC721(ChaincodeProxy chaincodeProxy) {
         this.chaincodeProxy = chaincodeProxy;
-    }
-
-    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
     }
 
     private String caller;

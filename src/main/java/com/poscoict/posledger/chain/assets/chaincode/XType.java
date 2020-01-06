@@ -1,6 +1,7 @@
 package com.poscoict.posledger.chain.assets.chaincode;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +49,7 @@ public class XType {
         this.caller = caller;
     }
 
-    public boolean registerTokenType(String admin, String type, Map<String, List<String>> xattr) throws Exception {
+    public boolean registerTokenType(String admin, String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- registerTokenType SDK called ----------------");
 
         String status = null;
@@ -115,7 +116,7 @@ public class XType {
             return tokenTypes;
         }
 
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     public Map<String, List<String>> getTokenType(String type) throws ProposalException, InvalidArgumentException, IOException {

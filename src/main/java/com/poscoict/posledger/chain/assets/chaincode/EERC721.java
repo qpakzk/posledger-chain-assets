@@ -12,17 +12,10 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
-
-@Resource
 public class EERC721 {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(EERC721.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String REGISTER_TOKEN_TYPE_FUNCTION_NAME = "registerTokenType";
-
-    private static final String MINT_FUNCTION_NAME = "mint";
 
     private static final String BALANCE_OF_FUNCTION_NAME = "balanceOf";
 
@@ -62,77 +55,6 @@ public class EERC721 {
 
     public void setCaller(String caller) {
         this.caller = caller;
-    }
-
-    public boolean registerTokenType(String type, Map<String, List<String>> xattr) throws Exception {
-        logger.info("---------------- registerTokenType SDK called ----------------");
-
-        String status = null;
-        boolean result = false;
-
-        try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(REGISTER_TOKEN_TYPE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            String json = objectMapper.writeValueAsString(xattr);
-            chaincodeRequest.setArgs(new String[] { type, json });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
-        } catch (ProposalException e) {
-            logger.error(e);
-            throw new ProposalException(e);
-        }
-
-        return result;
-    }
-
-    public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws Exception {
-        logger.info("---------------- mint SDK called ----------------");
-
-        String status = null;
-        boolean result = false;
-
-        try {
-            if (!caller.equals(owner)) {
-                return false;
-            }
-
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(MINT_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            String xattrJson = objectMapper.writeValueAsString(xattr);
-            String uriJson = objectMapper.writeValueAsString(uri);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), type, owner, xattrJson, uriJson });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
-        } catch (ProposalException e) {
-            logger.error(e);
-            throw new ProposalException(e);
-        }
-
-        return result;
     }
 
     public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {

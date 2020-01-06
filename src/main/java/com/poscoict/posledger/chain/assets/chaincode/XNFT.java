@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigInteger;
 import java.util.*;
 
-import static sun.java2d.cmm.ColorTransform.In;
-
 public class XNFT {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XNFT.class);

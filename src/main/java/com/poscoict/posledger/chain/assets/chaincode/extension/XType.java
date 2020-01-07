@@ -3,10 +3,9 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.apache.logging.log4j.LogManager;
-import org.hyperledger.fabric.sdk.ProposalResponse;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 
@@ -19,8 +18,6 @@ public class XType {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XType.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String SUCCESS = "SUCCESS";
 
     private ChaincodeProxy chaincodeProxy;
 
@@ -47,30 +44,16 @@ public class XType {
         logger.info("---------------- registerTokenType SDK called ----------------");
 
         String status = null;
-        boolean result = false;
+        boolean result;
 
         try {
             if (!caller.equals(admin)) {
                 return false;
             }
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(REGISTER_TOKEN_TYPE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
 
             String json = objectMapper.writeValueAsString(xattr);
-            chaincodeRequest.setArgs(new String[] { type, json });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { type, json };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, REGISTER_TOKEN_TYPE_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -83,62 +66,40 @@ public class XType {
     public List<String> tokenTypesOf() throws ProposalException, InvalidArgumentException {
         logger.info("---------------- tokenTypesOf SDK called ----------------");
 
-        String tokenTypsString = null;
-
+        String tokenTypsString;
+        List<String> tokenTypes = new ArrayList<String>();
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(TOKEN_TYPES_OF_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    tokenTypsString =  response.getMessage();
-                }
+            String[] args = {};
+            tokenTypsString = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_TYPES_OF_FUNCTION_NAME, chaincodeId, args);
+            if (tokenTypsString != null) {
+                tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
             }
-
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
 
-        if (tokenTypsString == null) {
-            return new ArrayList<String>();
-        }
-
-        List<String> tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
-        logger.info("tokenTypesOf {}", tokenTypes);
+        logger.info("tokenTypesOf {}", tokenTypes.toString());
         return tokenTypes;
     }
 
     public Map<String, List<String>> getTokenType(String type) throws ProposalException, InvalidArgumentException, IOException {
         logger.info("---------------- getTokenType SDK called ----------------");
 
-        String json = null;
-
+        String json;
+        Map<String, List<String>> xattr = new HashMap<String, List<String>>();
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(GET_TOKEN_TYPE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { type });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    json =  response.getMessage();
-                }
+            String[] args = { type };
+            json = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TOKEN_TYPE_FUNCTION_NAME, chaincodeId, args);
+            if (json != null) {
+                xattr = objectMapper.readValue(json, new TypeReference<Map<String, List<String>>>() {});
             }
-
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
 
-        Map<String, List<String>> xattr = objectMapper.readValue(json, new TypeReference<Map<String, List<String>>>() {});
-        logger.info("getTokenType {}", json);
+        logger.info("getTokenType {}", xattr.toString());
         return xattr;
     }
 }

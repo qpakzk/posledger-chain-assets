@@ -1,10 +1,8 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
+import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import com.poscoict.posledger.chain.model.ChaincodeRequest;
-import org.hyperledger.fabric.sdk.ProposalResponse;
 import java.math.BigInteger;
-import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -18,8 +16,6 @@ public class BaseNFT {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(BaseNFT.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String SUCCESS = "SUCCESS";
 
     private ChaincodeProxy chaincodeProxy;
 
@@ -41,31 +37,14 @@ public class BaseNFT {
     public boolean mint(BigInteger tokenId, String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- mint SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
-
+        boolean result;
         try {
             if (!caller.equals(owner)) {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(MINT_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), owner });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString(), owner };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -86,23 +65,8 @@ public class BaseNFT {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(BURN_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString() };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, BURN_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -114,22 +78,10 @@ public class BaseNFT {
     public String getType(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getType SDK called ----------------");
 
-        String type = null;
-
+        String type;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(GET_TYPE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    type =  response.getMessage();
-                }
-            }
-
+            String[] args = { tokenId.toString() };
+            type = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TYPE_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);

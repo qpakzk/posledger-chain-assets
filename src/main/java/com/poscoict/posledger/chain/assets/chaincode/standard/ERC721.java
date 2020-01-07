@@ -1,10 +1,8 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
+import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import com.poscoict.posledger.chain.model.ChaincodeRequest;
-import org.hyperledger.fabric.sdk.ProposalResponse;
 import java.math.BigInteger;
-import java.util.Collection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -16,8 +14,6 @@ public class ERC721 {
     private static final Logger logger = LogManager.getLogger(ERC721.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String SUCCESS = "SUCCESS";
 
     private ChaincodeProxy chaincodeProxy;
 
@@ -36,24 +32,11 @@ public class ERC721 {
     public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
-        BigInteger balanceBigInt = null;
-
+        BigInteger balanceBigInt;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(BALANCE_OF_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { owner });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    String balance =  response.getMessage();
-                    int balanceInt = Integer.parseInt(balance);
-                    balanceBigInt = BigInteger.valueOf(balanceInt);
-                }
-            }
-
+            String[] args = { owner };
+            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, chaincodeId, args);
+            balanceBigInt = new BigInteger(balance);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -66,22 +49,10 @@ public class ERC721 {
     public String ownerOf(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- ownerOf SDK called ----------------");
 
-        String owner = null;
-
+        String owner;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(OWNER_OF_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    owner =  response.getMessage();
-                }
-            }
-
+            String[] args = { tokenId.toString() };
+            owner = ChaincodeCommunication.readFromChaincode(chaincodeProxy, OWNER_OF_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -95,7 +66,6 @@ public class ERC721 {
     public boolean transferFrom(String from, String to, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- transferFrom SDK called ----------------");
 
-        String status = null;
         boolean result = false;
         try {
             String owner = ownerOf(tokenId);
@@ -104,23 +74,8 @@ public class ERC721 {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(TRANSFER_FROM_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { from, to, tokenId.toString() });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = (response.getStatus()).toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { from, to, tokenId.toString() };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, TRANSFER_FROM_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -132,31 +87,15 @@ public class ERC721 {
     public boolean approve(String approved, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- approve SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
+        boolean result;
         try {
             String owner = ownerOf(tokenId);
             if(!(caller.equals(owner) || isApprovedForAll(owner, caller))) {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(APPROVE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { approved, tokenId.toString() });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = (response.getStatus()).toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { approved, tokenId.toString() };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, APPROVE_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -168,30 +107,14 @@ public class ERC721 {
     public boolean setApprovalForAll(String operator, boolean approved) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setApprovalForAll SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
+        boolean result;
         try {
             if (caller.equals(operator)) {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(SET_APPROVAL_FOR_ALL_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { caller, operator, Boolean.toString(approved) });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = (response.getStatus()).toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { caller, operator, Boolean.toString(approved) };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_APPROVAL_FOR_ALL_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -203,22 +126,10 @@ public class ERC721 {
     public String getApproved(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getApproved SDK called ----------------");
 
-        String approved = null;
-
+        String approved;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(GET_APPROVED_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    approved =  response.getMessage();
-                }
-            }
-
+            String[] args = { tokenId.toString() };
+            approved = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_APPROVED_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -230,22 +141,11 @@ public class ERC721 {
     public boolean isApprovedForAll(String owner, String operator) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- isApprovedForAll SDK called ----------------");
 
-        boolean result = false;
-
+        boolean result;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(IS_APPROVED_FOR_ALL_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { owner, operator });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    result = Boolean.parseBoolean(response.getMessage());
-                }
-            }
-
+            String[] args = { owner, operator };
+            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, IS_APPROVED_FOR_ALL_FUNCTION_NAME, chaincodeId, args);
+            result = Boolean.parseBoolean(response);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);

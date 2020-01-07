@@ -2,11 +2,10 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.apache.logging.log4j.LogManager;
-import org.hyperledger.fabric.sdk.ProposalResponse;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ public class XNFT {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XNFT.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String SUCCESS = "SUCCESS";
 
     private ChaincodeProxy chaincodeProxy;
 
@@ -54,33 +51,16 @@ public class XNFT {
     public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- mint SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
-
+        boolean result;
         try {
             if (!caller.equals(owner)) {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(MINT_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
             String xattrJson = objectMapper.writeValueAsString(xattr);
             String uriJson = objectMapper.writeValueAsString(uri);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), type, owner, xattrJson, uriJson });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString(), type, owner, xattrJson, uriJson };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -92,8 +72,8 @@ public class XNFT {
     public boolean setURI(BigInteger tokenId, String index, String value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setURI SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
+
+        boolean result;
 
         try {
             String owner = erc721.ownerOf(tokenId);
@@ -101,23 +81,8 @@ public class XNFT {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(SET_URI_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), index, value });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString(), index, value };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_URI_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -129,22 +94,10 @@ public class XNFT {
     public String getURI(BigInteger tokenId, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getURI SDK called ----------------");
 
-        String value = null;
-
+        String value;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(GET_URI_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), index });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    value =  response.getMessage();
-                }
-            }
-
+            String[] args = { tokenId.toString(), index };
+            value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_URI_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -157,32 +110,15 @@ public class XNFT {
     public boolean setXAttr(BigInteger tokenId, String index, Object value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setXAttr SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
-
+        boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
             if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(SET_XATTR_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), index, String.valueOf(value) });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString(), index, String.valueOf(value) };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -195,21 +131,9 @@ public class XNFT {
         logger.info("---------------- getXAttr SDK called ----------------");
 
         String value = null;
-
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(GET_XATTR_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), index });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    value =  response.getMessage();
-                }
-            }
-
+            String[] args = { tokenId.toString(), index };
+            value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_XATTR_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);

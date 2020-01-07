@@ -1,9 +1,8 @@
 package com.poscoict.posledger.chain.assets.chaincode.extension;
 
+import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import com.poscoict.posledger.chain.model.ChaincodeRequest;
-import org.hyperledger.fabric.sdk.ProposalResponse;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -18,8 +17,6 @@ public class EERC721 {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(EERC721.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String SUCCESS = "SUCCESS";
 
     private ChaincodeProxy chaincodeProxy;
 
@@ -41,24 +38,11 @@ public class EERC721 {
     public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
-        BigInteger balanceBigInt = null;
-
+        BigInteger balanceBigInt;
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(BALANCE_OF_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { owner, type });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    String balance =  response.getMessage();
-                    int balanceInt = Integer.parseInt(balance);
-                    balanceBigInt = BigInteger.valueOf(balanceInt);
-                }
-            }
-
+            String[] args = { owner, type };
+            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, chaincodeId, args);
+            balanceBigInt = new BigInteger(balance);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -72,41 +56,24 @@ public class EERC721 {
         logger.info("---------------- tokenIdsOf SDK called ----------------");
 
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
-        String result = null;
-
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(TOKEN_IDS_OF_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { owner });
+            String[] args = { owner };
+            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, chaincodeId, args);
 
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
+            if(response != null) {
+                response = response.substring(1, response.length() - 1);
 
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    result =  response.getMessage();
+                String[] strings = response.substring(1, response.length() - 1).trim().split(",");
+                for (String string : strings) {
+                    tokenIds.add(new BigInteger(string));
                 }
             }
-
-            if(result != null) {
-                result = result.substring(1);
-                result = result.substring(0, result.length() - 1);
-
-                String[] string = result.split(", ");
-                BigInteger[] bigInt = new BigInteger[string.length];
-                for (int i = 0; i < string.length; i++) {
-                    int n = Integer.parseInt(string[i]);
-                    bigInt[i] = BigInteger.valueOf(n);
-                }
-                tokenIds = Arrays.asList(bigInt);
-            }
-
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
 
-        logger.info("tokenIds {}", result);
+        logger.info("tokenIds {}", tokenIds.toString());
         return tokenIds;
     }
 
@@ -114,41 +81,24 @@ public class EERC721 {
         logger.info("---------------- tokenIdsOf SDK called ----------------");
 
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
-        String result = null;
-
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(TOKEN_IDS_OF_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { owner, type });
+            String[] args = { owner, type };
+            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, chaincodeId, args);
 
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
+            if(response != null) {
+                response = response.substring(1, response.length() - 1);
 
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    result =  response.getMessage();
+                String[] strings = response.substring(1, response.length() - 1).trim().split(",");
+                for (String string : strings) {
+                    tokenIds.add(new BigInteger(string));
                 }
             }
-
-            if(result != null) {
-                result = result.substring(1);
-                result = result.substring(0, result.length() - 1);
-
-                String[] string = result.split(", ");
-                BigInteger[] bigInt = new BigInteger[string.length];
-                for (int i = 0; i < string.length; i++) {
-                    int n = Integer.parseInt(string[i]);
-                    bigInt[i] = BigInteger.valueOf(n);
-                }
-                tokenIds = Arrays.asList(bigInt);
-            }
-
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
 
-        logger.info("tokenIds {}", result);
+        logger.info("tokenIds {}", tokenIds.toString());
         return tokenIds;
     }
 
@@ -164,23 +114,8 @@ public class EERC721 {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(DEACTIVATE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString() };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DEACTIVATE_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -201,23 +136,8 @@ public class EERC721 {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(DIVIDE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(),  Arrays.toString(newIds), Arrays.toString(values), index });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString(),  Arrays.toString(newIds), Arrays.toString(values), index };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DIVIDE_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -238,23 +158,8 @@ public class EERC721 {
                 return false;
             }
 
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(UPDATE_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-
-            chaincodeRequest.setArgs(new String[] { tokenId.toString(), index, attr });
-            Collection<ProposalResponse> responses = chaincodeProxy.sendTransaction(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    status = response.getStatus().toString();
-                }
-            }
-
-            if (status != null && status.equals(SUCCESS)) {
-                result = true;
-            }
-
+            String[] args = { tokenId.toString(), index, attr };
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, UPDATE_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -266,22 +171,11 @@ public class EERC721 {
     public String query(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- query SDK called ----------------");
 
-        String result = null;
+        String result;
 
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(QUERY_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    result =  response.getMessage();
-                }
-            }
-
+            String[] args = { tokenId.toString() };
+            result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_FUNCTION_NAME, chaincodeId, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -298,24 +192,11 @@ public class EERC721 {
         String result = null;
 
         try {
-            ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
-            chaincodeRequest.setFunctionName(QUERY_HISTORY_FUNCTION_NAME);
-            chaincodeRequest.setChaincodeName(chaincodeId);
-            chaincodeRequest.setArgs(new String[] { tokenId.toString() });
-
-            Collection<ProposalResponse> responses = chaincodeProxy.queryByChainCode(chaincodeRequest);
-
-            for (ProposalResponse response : responses) {
-                if (response.getChaincodeActionResponsePayload() != null) {
-                    result =  response.getMessage();
-                }
-            }
+            String[] args = { tokenId.toString() };
+            result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, chaincodeId, args);
 
             if(result != null) {
-                result = result.substring(1);
-                result = result.substring(0, result.length() - 1);
-
-                histories = Arrays.asList(result.split(", "));
+                histories = Arrays.asList(result.substring(1, result.length() - 1).trim().split(","));
             }
 
         } catch (ProposalException e) {

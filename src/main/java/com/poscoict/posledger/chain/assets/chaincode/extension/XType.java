@@ -108,13 +108,13 @@ public class XType {
             throw new ProposalException(e);
         }
 
-        if(tokenTypsString != null) {
-            List<String> tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
-            logger.info("tokenTypesOf {}", tokenTypes);
-            return tokenTypes;
+        if (tokenTypsString == null) {
+            return new ArrayList<String>();
         }
 
-        return Collections.EMPTY_LIST;
+        List<String> tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
+        logger.info("tokenTypesOf {}", tokenTypes);
+        return tokenTypes;
     }
 
     public Map<String, List<String>> getTokenType(String type) throws ProposalException, InvalidArgumentException, IOException {

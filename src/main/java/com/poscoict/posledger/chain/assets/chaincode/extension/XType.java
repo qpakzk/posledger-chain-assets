@@ -1,9 +1,7 @@
-package com.poscoict.posledger.chain.assets.chaincode;
+package com.poscoict.posledger.chain.assets.chaincode.extension;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import com.poscoict.posledger.chain.model.ChaincodeRequest;

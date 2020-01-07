@@ -1,4 +1,4 @@
-package com.poscoict.posledger.chain.assets.chaincode;
+package com.poscoict.posledger.chain.assets.chaincode.standard;
 
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import com.poscoict.posledger.chain.model.ChaincodeRequest;

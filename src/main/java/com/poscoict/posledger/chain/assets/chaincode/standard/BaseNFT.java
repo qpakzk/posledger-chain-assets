@@ -1,6 +1,5 @@
-package com.poscoict.posledger.chain.assets.chaincode;
+package com.poscoict.posledger.chain.assets.chaincode.standard;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import com.poscoict.posledger.chain.model.ChaincodeRequest;
 import org.hyperledger.fabric.sdk.ProposalResponse;

@@ -97,7 +97,7 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.poscoict.posledger.chain.assets.chaincode.ERC721</mainClass>
+									<mainClass>com.poscoict.posledger.chain.assets.chaincode.standard.ERC721</mainClass>
 								</transformer>
 							</transformers>
 							<filters>

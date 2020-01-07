@@ -11,17 +11,13 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+
 public class BaseNFT {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(BaseNFT.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String MINT_FUNCTION_NAME = "mint";
-
-    private static final String BURN_FUNCTION_NAME = "burn";
-
-    private static final String GET_TYPE_FUNCTION_NAME = "getType";
 
     private static final String SUCCESS = "SUCCESS";
 

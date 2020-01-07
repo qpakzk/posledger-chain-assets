@@ -13,16 +13,12 @@ import org.hyperledger.fabric.sdk.exception.ProposalException;
 import java.io.IOException;
 import java.util.*;
 
+import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+
 public class XType {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XType.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String REGISTER_TOKEN_TYPE_FUNCTION_NAME = "registerTokenType";
-
-    private static final String TOKEN_TYPES_OF_FUNCTION_NAME = "tokenTypesOf";
-
-    private static final String GET_TOKEN_TYPE_FUNCTION_NAME = "getTokenType";
 
     private static final String SUCCESS = "SUCCESS";
 

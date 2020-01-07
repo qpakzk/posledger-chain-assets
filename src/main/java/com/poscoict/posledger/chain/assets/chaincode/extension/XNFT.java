@@ -14,21 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigInteger;
 import java.util.*;
 
+import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+
 public class XNFT {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XNFT.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String MINT_FUNCTION_NAME = "mint";
-
-    private static final String SET_URI_FUNCTION_NAME = "setURI";
-
-    private static final String GET_URI_FUNCTION_NAME = "getURI";
-
-    private static final String SET_XATTR_FUNCTION_NAME = "setXAttr";
-
-    private static final String GET_XATTR_FUNCTION_NAME = "getXAttr";
 
     private static final String SUCCESS = "SUCCESS";
 

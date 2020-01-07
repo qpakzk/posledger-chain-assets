@@ -12,24 +12,12 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+
 public class EERC721 {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(EERC721.class);
 
     private static String chaincodeId = "assetscc";
-
-    private static final String BALANCE_OF_FUNCTION_NAME = "balanceOf";
-
-    private static final String TOKEN_IDS_OF_FUNCTION_NAME = "tokenIdsOf";
-
-    private static final String DIVIDE_FUNCTION_NAME = "divide";
-
-    private static final String UPDATE_FUNCTION_NAME = "setXAttr";
-
-    private static final String DEACTIVATE_FUNCTION_NAME = "deactivate";
-
-    private static final String QUERY_FUNCTION_NAME = "query";
-
-    private static final String QUERY_HISTORY_FUNCTION_NAME = "queryHistory";
 
     private static final String SUCCESS = "SUCCESS";
 

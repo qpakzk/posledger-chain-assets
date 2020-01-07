@@ -10,29 +10,16 @@ import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 
+import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+
 public class ERC721 {
     private static final Logger logger = LogManager.getLogger(ERC721.class);
 
     private static String chaincodeId = "assetscc";
 
-    private static final String BALANCE_OF_FUNCTION_NAME = "balanceOf";
-
-    private static final String OWNER_OF_FUNCTION_NAME = "ownerOf";
-
-    private static final String TRANSFER_FROM_FUNCTION_NAME = "transferFrom";
-
-    private static final String APPROVE_FUNCTION_NAME = "approve";
-
-    private static final String SET_APPROVAL_FOR_ALL_FUNCTION_NAME = "setApprovalForAll";
-
-    private static final String GET_APPROVED_FUNCTION_NAME = "getApproved";
-
-    private static final String IS_APPROVED_FOR_ALL_FUNCTION_NAME = "isApprovedForAll";
-
     private static final String SUCCESS = "SUCCESS";
 
     private ChaincodeProxy chaincodeProxy;
-
 
     public ERC721() {}
 
@@ -45,9 +32,6 @@ public class ERC721 {
     public void setCaller(String caller) {
         this.caller = caller;
     }
-
-
-
 
     public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");

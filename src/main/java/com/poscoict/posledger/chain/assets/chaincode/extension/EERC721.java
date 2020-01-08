@@ -105,9 +105,7 @@ public class EERC721 {
     public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- deactivate SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
-
+        boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
             if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
@@ -127,9 +125,7 @@ public class EERC721 {
     public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- divide SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
-
+        boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
             if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
@@ -149,9 +145,7 @@ public class EERC721 {
     public boolean update(BigInteger tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- update SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
-
+        boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
             if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
@@ -172,7 +166,6 @@ public class EERC721 {
         logger.info("---------------- query SDK called ----------------");
 
         String result;
-
         try {
             String[] args = { tokenId.toString() };
             result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_FUNCTION_NAME, chaincodeId, args);
@@ -189,8 +182,7 @@ public class EERC721 {
         logger.info("---------------- queryHistory SDK called ----------------");
 
         List<String> histories = new ArrayList<String>();
-        String result = null;
-
+        String result;
         try {
             String[] args = { tokenId.toString() };
             result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, chaincodeId, args);

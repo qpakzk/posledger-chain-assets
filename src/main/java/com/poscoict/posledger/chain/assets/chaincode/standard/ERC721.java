@@ -1,5 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
+import com.poscoict.posledger.chain.assets.chaincode.SDK;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
@@ -11,15 +12,18 @@ import org.hyperledger.fabric.sdk.exception.ProposalException;
 
 import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
-public class ERC721 {
+public class ERC721 extends SDK {
     private static final Logger logger = LogManager.getLogger(ERC721.class);
 
     private ChaincodeProxy chaincodeProxy;
 
-    public ERC721() {}
+    public ERC721() {
+        super();
+    }
 
     public ERC721(ChaincodeProxy chaincodeProxy) {
-        this.chaincodeProxy = chaincodeProxy;
+        super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
     }
 
     public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {

@@ -34,16 +34,16 @@ public class EERC721 {
     public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
-        BigInteger balanceBigInt;
+        BigInteger balance;
         try {
             String[] args = { owner, type };
-            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
-            balanceBigInt = new BigInteger(balance);
+            String balanceStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
+            balance = new BigInteger(balanceStr);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
-        return balanceBigInt;
+        return balance;
     }
 
     public List<BigInteger> tokenIdsOf(String owner) throws ProposalException, InvalidArgumentException {
@@ -52,12 +52,10 @@ public class EERC721 {
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
         try {
             String[] args = { owner };
-            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
+            String tokenIdsStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
-            if(response != null) {
-                response = response.substring(1, response.length() - 1);
-
-                String[] strings = response.substring(1, response.length() - 1).trim().split(",");
+            if(tokenIdsStr != null) {
+                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).trim().split(",");
                 for (String string : strings) {
                     tokenIds.add(new BigInteger(string));
                 }
@@ -75,12 +73,10 @@ public class EERC721 {
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
         try {
             String[] args = { owner, type };
-            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
+            String tokenIdsStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
-            if(response != null) {
-                response = response.substring(1, response.length() - 1);
-
-                String[] strings = response.substring(1, response.length() - 1).trim().split(",");
+            if(tokenIdsStr != null) {
+                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).trim().split(",");
                 for (String string : strings) {
                     tokenIds.add(new BigInteger(string));
                 }

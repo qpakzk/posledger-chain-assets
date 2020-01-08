@@ -3,6 +3,7 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poscoict.posledger.chain.assets.chaincode.SDK;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
@@ -16,22 +17,26 @@ import java.util.*;
 
 import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
-public class XType {
+public class XType extends SDK {
     private static final Logger logger = LogManager.getLogger(XType.class);
 
     private ChaincodeProxy chaincodeProxy;
 
     private ObjectMapper objectMapper;
 
-    public XType() {}
+    public XType() {
+        super();
+    }
 
     public XType(ChaincodeProxy chaincodeProxy) {
-        this.chaincodeProxy = chaincodeProxy;
+        super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
     }
 
     public XType(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
-        this.chaincodeProxy = chaincodeProxy;
-        this.objectMapper = objectMapper;
+        super(chaincodeProxy, objectMapper);
+        this.chaincodeProxy = super.getChaincodeProxy();
+        this.objectMapper = super.getObjectMapper();
     }
 
     public boolean registerTokenType(String admin, String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {

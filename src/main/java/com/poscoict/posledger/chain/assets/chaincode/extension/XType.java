@@ -18,8 +18,6 @@ import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 public class XType {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XType.class);
 
-    private static String chaincodeId = "assetscc";
-
     private ChaincodeProxy chaincodeProxy;
 
     private ObjectMapper objectMapper;

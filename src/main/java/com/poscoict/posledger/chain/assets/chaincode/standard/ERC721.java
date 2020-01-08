@@ -14,8 +14,6 @@ import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 public class ERC721 {
     private static final Logger logger = LogManager.getLogger(ERC721.class);
 
-    private static String chaincodeId = "assetscc";
-
     private ChaincodeProxy chaincodeProxy;
 
     public ERC721() {}

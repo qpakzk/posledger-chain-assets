@@ -16,8 +16,6 @@ public class BaseNFT {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(BaseNFT.class);
 
-    private static String chaincodeId = "assetscc";
-
     private ChaincodeProxy chaincodeProxy;
 
     @Autowired

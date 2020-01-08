@@ -2,7 +2,10 @@ package com.poscoict.posledger.chain.assets.chaincode.util;
 
 public class Manager {
     private static String caller;
+
     private static String chaincodeId;
+
+    private Manager() {}
 
     public static void setCaller(String caller) {
         Manager.caller = caller;

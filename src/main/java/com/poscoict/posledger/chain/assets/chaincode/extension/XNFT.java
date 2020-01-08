@@ -42,11 +42,10 @@ public class XNFT {
         this.objectMapper = objectMapper;
     }
 
-    private String caller = Manager.getCaller();
-
     public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- mint SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             if (!caller.equals(owner)) {
@@ -67,7 +66,7 @@ public class XNFT {
     public boolean setURI(BigInteger tokenId, String index, String value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setURI SDK called ----------------");
 
-
+        String caller = Manager.getCaller();
         boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
@@ -101,6 +100,7 @@ public class XNFT {
     public boolean setXAttr(BigInteger tokenId, String index, Object value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setXAttr SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);

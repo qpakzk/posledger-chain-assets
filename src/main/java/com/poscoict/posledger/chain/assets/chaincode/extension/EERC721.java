@@ -29,8 +29,6 @@ public class EERC721 {
         this.chaincodeProxy = chaincodeProxy;
     }
 
-    private String caller = Manager.getCaller();
-
     public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
@@ -91,6 +89,7 @@ public class EERC721 {
     public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- deactivate SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
@@ -110,6 +109,7 @@ public class EERC721 {
     public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- divide SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);
@@ -129,6 +129,7 @@ public class EERC721 {
     public boolean update(BigInteger tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- update SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             String owner = erc721.ownerOf(tokenId);

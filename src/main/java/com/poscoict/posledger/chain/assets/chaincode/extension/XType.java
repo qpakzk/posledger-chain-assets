@@ -34,11 +34,10 @@ public class XType {
         this.objectMapper = objectMapper;
     }
 
-    private String caller = Manager.getCaller();
-
     public boolean registerTokenType(String admin, String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- registerTokenType SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             if (!caller.equals(admin)) {

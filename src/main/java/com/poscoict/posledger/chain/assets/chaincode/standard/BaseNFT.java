@@ -28,11 +28,10 @@ public class BaseNFT {
         this.chaincodeProxy = chaincodeProxy;
     }
 
-    private String caller = Manager.getCaller();
-
     public boolean mint(BigInteger tokenId, String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- mint SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             if (!caller.equals(owner)) {
@@ -51,8 +50,8 @@ public class BaseNFT {
     public boolean burn(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- burn SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
-
         try {
             String owner = erc721.ownerOf(tokenId);
             if(!(caller.equals(owner))) {

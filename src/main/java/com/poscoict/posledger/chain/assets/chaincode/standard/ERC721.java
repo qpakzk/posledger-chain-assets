@@ -22,8 +22,6 @@ public class ERC721 {
         this.chaincodeProxy = chaincodeProxy;
     }
 
-    private String caller = Manager.getCaller();
-
     public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
@@ -57,7 +55,8 @@ public class ERC721 {
     public boolean transferFrom(String from, String to, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- transferFrom SDK called ----------------");
 
-        boolean result = false;
+        String caller = Manager.getCaller();
+        boolean result;
         try {
             String owner = ownerOf(tokenId);
             String approved = getApproved(tokenId);
@@ -77,6 +76,7 @@ public class ERC721 {
     public boolean approve(String approved, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- approve SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             String owner = ownerOf(tokenId);
@@ -96,6 +96,7 @@ public class ERC721 {
     public boolean setApprovalForAll(String operator, boolean approved) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setApprovalForAll SDK called ----------------");
 
+        String caller = Manager.getCaller();
         boolean result;
         try {
             if (caller.equals(operator)) {

@@ -43,9 +43,7 @@ public class XType {
     public boolean registerTokenType(String admin, String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- registerTokenType SDK called ----------------");
 
-        String status = null;
         boolean result;
-
         try {
             if (!caller.equals(admin)) {
                 return false;

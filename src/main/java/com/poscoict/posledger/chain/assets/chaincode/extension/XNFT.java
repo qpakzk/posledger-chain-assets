@@ -73,7 +73,6 @@ public class XNFT {
 
 
         boolean result;
-
         try {
             String owner = erc721.ownerOf(tokenId);
             if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {

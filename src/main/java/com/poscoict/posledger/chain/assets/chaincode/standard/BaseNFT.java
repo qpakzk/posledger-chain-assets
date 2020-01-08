@@ -55,8 +55,7 @@ public class BaseNFT {
     public boolean burn(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- burn SDK called ----------------");
 
-        String status = null;
-        boolean result = false;
+        boolean result;
 
         try {
             String owner = erc721.ownerOf(tokenId);

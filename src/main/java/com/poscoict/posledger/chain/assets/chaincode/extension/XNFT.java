@@ -7,6 +7,7 @@ import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
 public class XNFT {
 
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XNFT.class);
+    private static final Logger logger = LogManager.getLogger(XNFT.class);
 
     private ChaincodeProxy chaincodeProxy;
 

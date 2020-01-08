@@ -6,6 +6,7 @@ import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.math.BigInteger;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
 public class BaseNFT {
 
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(BaseNFT.class);
+    private static final Logger logger = LogManager.getLogger(BaseNFT.class);
 
     private ChaincodeProxy chaincodeProxy;
 

@@ -3,7 +3,7 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -12,7 +12,7 @@ import org.hyperledger.fabric.sdk.exception.ProposalException;
 import java.io.IOException;
 import java.util.*;
 
-import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
 public class XType {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XType.class);

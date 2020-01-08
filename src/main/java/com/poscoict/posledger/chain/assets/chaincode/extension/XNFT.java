@@ -2,7 +2,7 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigInteger;
 import java.util.*;
 
-import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
 public class XNFT {
 

@@ -1,6 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode.extension;
 
-import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
 public class EERC721 {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(EERC721.class);

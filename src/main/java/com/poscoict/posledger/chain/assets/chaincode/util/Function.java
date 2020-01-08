@@ -1,4 +1,4 @@
-package com.poscoict.posledger.chain.assets.chaincode.constant;
+package com.poscoict.posledger.chain.assets.chaincode.util;
 
 public final class Function {
     private Function() {}

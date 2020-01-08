@@ -1,6 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
-import com.poscoict.posledger.chain.assets.chaincode.communication.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.math.BigInteger;
 
@@ -9,7 +9,7 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.poscoict.posledger.chain.assets.chaincode.constant.Function.*;
+import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
 public class BaseNFT {
 

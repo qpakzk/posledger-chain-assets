@@ -9,23 +9,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
-public class BaseNFT {
+public class BaseNFT extends ERC721 {
 
     private static final Logger logger = LogManager.getLogger(BaseNFT.class);
 
     private ChaincodeProxy chaincodeProxy;
 
-    @Autowired
-    private ERC721 erc721;
-
-    public BaseNFT() {}
+    public BaseNFT() {
+        super();
+    }
 
     public BaseNFT(ChaincodeProxy chaincodeProxy) {
-        this.chaincodeProxy = chaincodeProxy;
+        super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
     }
 
     public boolean mint(BigInteger tokenId, String owner) throws ProposalException, InvalidArgumentException {
@@ -53,7 +52,7 @@ public class BaseNFT {
         String caller = Manager.getCaller();
         boolean result;
         try {
-            String owner = erc721.ownerOf(tokenId);
+            String owner = super.ownerOf(tokenId);
             if(!(caller.equals(owner))) {
                 return false;
             }

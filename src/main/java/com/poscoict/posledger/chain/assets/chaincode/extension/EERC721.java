@@ -143,7 +143,7 @@ public class EERC721 extends ERC721 {
             }
 
             String[] args = { tokenId.toString(), index, attr };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, UPDATE_FUNCTION_NAME, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);

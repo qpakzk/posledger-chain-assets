@@ -65,7 +65,6 @@ public class XNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -87,7 +86,6 @@ public class XNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -102,8 +100,6 @@ public class XNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("getURI {}", value);
         return value;
     }
 
@@ -123,7 +119,6 @@ public class XNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -138,8 +133,6 @@ public class XNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("getXAttr {}", value);
         return value;
     }
 }

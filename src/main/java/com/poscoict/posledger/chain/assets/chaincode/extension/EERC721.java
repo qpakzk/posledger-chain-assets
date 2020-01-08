@@ -47,8 +47,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("balance {}", balanceBigInt);
         return balanceBigInt;
     }
 
@@ -72,8 +70,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("tokenIds {}", tokenIds.toString());
         return tokenIds;
     }
 
@@ -97,8 +93,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("tokenIds {}", tokenIds.toString());
         return tokenIds;
     }
 
@@ -118,7 +112,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -138,7 +131,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -158,7 +150,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -173,8 +164,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("query {}", result);
         return result;
     }
 
@@ -184,6 +173,7 @@ public class EERC721 {
         List<String> histories = new ArrayList<String>();
         String result;
         try {
+
             String[] args = { tokenId.toString() };
             result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, chaincodeId, args);
 
@@ -195,8 +185,6 @@ public class EERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("query history {}", result);
         return histories;
     }
 }

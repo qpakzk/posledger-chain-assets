@@ -58,7 +58,6 @@ public class XType {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -78,8 +77,6 @@ public class XType {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("tokenTypesOf {}", tokenTypes.toString());
         return tokenTypes;
     }
 
@@ -98,8 +95,6 @@ public class XType {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("getTokenType {}", xattr.toString());
         return xattr;
     }
 }

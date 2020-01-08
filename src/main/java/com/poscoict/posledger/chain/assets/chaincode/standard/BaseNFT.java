@@ -49,7 +49,6 @@ public class BaseNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -71,7 +70,6 @@ public class BaseNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -86,8 +84,6 @@ public class BaseNFT {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("getType {}", type);
         return type;
     }
 }

@@ -41,8 +41,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("balance: {}", balanceBigInt);
         return balanceBigInt;
     }
 
@@ -57,8 +55,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
-        logger.info("owner {}", owner);
         return owner;
     }
 
@@ -80,7 +76,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -100,7 +95,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -119,7 +113,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 
@@ -134,7 +127,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return approved;
     }
 
@@ -150,7 +142,6 @@ public class ERC721 {
             logger.error(e);
             throw new ProposalException(e);
         }
-
         return result;
     }
 

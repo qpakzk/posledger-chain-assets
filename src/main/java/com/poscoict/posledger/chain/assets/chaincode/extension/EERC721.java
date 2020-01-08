@@ -1,5 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode.extension;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
@@ -25,6 +26,11 @@ public class EERC721 extends ERC721 {
 
     public EERC721(ChaincodeProxy chaincodeProxy) {
         super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
+    }
+
+    public EERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
+        super(chaincodeProxy, objectMapper);
         this.chaincodeProxy = super.getChaincodeProxy();
     }
 

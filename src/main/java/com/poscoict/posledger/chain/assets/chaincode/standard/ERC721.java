@@ -1,5 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.SDK;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
@@ -23,6 +24,11 @@ public class ERC721 extends SDK {
 
     public ERC721(ChaincodeProxy chaincodeProxy) {
         super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
+    }
+
+    public ERC721(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
+        super(chaincodeProxy, objectMapper);
         this.chaincodeProxy = super.getChaincodeProxy();
     }
 

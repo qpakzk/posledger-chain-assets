@@ -1,5 +1,6 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
@@ -24,6 +25,11 @@ public class BaseNFT extends ERC721 {
 
     public BaseNFT(ChaincodeProxy chaincodeProxy) {
         super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
+    }
+
+    public BaseNFT(ChaincodeProxy chaincodeProxy, ObjectMapper objectMapper) {
+        super(chaincodeProxy, objectMapper);
         this.chaincodeProxy = super.getChaincodeProxy();
     }
 

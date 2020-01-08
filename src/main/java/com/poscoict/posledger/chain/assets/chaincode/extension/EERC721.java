@@ -11,22 +11,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
-public class EERC721 {
+public class EERC721 extends ERC721 {
     private static final Logger logger = LogManager.getLogger(EERC721.class);
 
     private ChaincodeProxy chaincodeProxy;
 
-    @Autowired
-    private ERC721 erc721;
-
-    public EERC721() {}
+    public EERC721() {
+        super();
+    }
 
     public EERC721(ChaincodeProxy chaincodeProxy) {
-        this.chaincodeProxy = chaincodeProxy;
+        super(chaincodeProxy);
+        this.chaincodeProxy = super.getChaincodeProxy();
     }
 
     public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
@@ -92,8 +91,8 @@ public class EERC721 {
         String caller = Manager.getCaller();
         boolean result;
         try {
-            String owner = erc721.ownerOf(tokenId);
-            if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
+            String owner = super.ownerOf(tokenId);
+            if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
                 return false;
             }
 
@@ -112,8 +111,8 @@ public class EERC721 {
         String caller = Manager.getCaller();
         boolean result;
         try {
-            String owner = erc721.ownerOf(tokenId);
-            if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
+            String owner = super.ownerOf(tokenId);
+            if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
                 return false;
             }
 
@@ -132,8 +131,8 @@ public class EERC721 {
         String caller = Manager.getCaller();
         boolean result;
         try {
-            String owner = erc721.ownerOf(tokenId);
-            if(!(caller.equals(owner) || erc721.isApprovedForAll(owner, caller))) {
+            String owner = super.ownerOf(tokenId);
+            if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
                 return false;
             }
 

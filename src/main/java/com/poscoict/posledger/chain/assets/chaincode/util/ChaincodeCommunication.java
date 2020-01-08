@@ -10,9 +10,11 @@ import java.util.Collection;
 public class ChaincodeCommunication {
     private static final String SUCCESS_STATUS = "SUCCESS";
 
+    private static String chaincodeId = Manager.getChaincodeId();
+
     private ChaincodeCommunication() {}
 
-    public static boolean writeToChaincode(ChaincodeProxy chaincodeProxy, String function, String chaincodeId, String[] args) throws InvalidArgumentException, ProposalException {
+    public static boolean writeToChaincode(ChaincodeProxy chaincodeProxy, String function, String[] args) throws InvalidArgumentException, ProposalException {
         String status = null;
         boolean result = false;
 
@@ -36,7 +38,7 @@ public class ChaincodeCommunication {
         return result;
     }
 
-    public static String readFromChaincode(ChaincodeProxy chaincodeProxy, String function, String chaincodeId, String[] args) throws InvalidArgumentException, ProposalException {
+    public static String readFromChaincode(ChaincodeProxy chaincodeProxy, String function, String[] args) throws InvalidArgumentException, ProposalException {
         ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
         chaincodeRequest.setFunctionName(function);
         chaincodeRequest.setChaincodeName(chaincodeId);

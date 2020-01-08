@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -34,11 +35,7 @@ public class XType {
         this.objectMapper = objectMapper;
     }
 
-    private String caller;
-
-    public void setCaller(String caller) {
-        this.caller = caller;
-    }
+    private String caller = Manager.getCaller();
 
     public boolean registerTokenType(String admin, String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- registerTokenType SDK called ----------------");
@@ -51,7 +48,7 @@ public class XType {
 
             String json = objectMapper.writeValueAsString(xattr);
             String[] args = { type, json };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, REGISTER_TOKEN_TYPE_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, REGISTER_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -67,7 +64,7 @@ public class XType {
         List<String> tokenTypes = new ArrayList<String>();
         try {
             String[] args = {};
-            tokenTypsString = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_TYPES_OF_FUNCTION_NAME, chaincodeId, args);
+            tokenTypsString = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_TYPES_OF_FUNCTION_NAME, args);
             if (tokenTypsString != null) {
                 tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
             }
@@ -85,7 +82,7 @@ public class XType {
         Map<String, List<String>> xattr = new HashMap<String, List<String>>();
         try {
             String[] args = { type };
-            json = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TOKEN_TYPE_FUNCTION_NAME, chaincodeId, args);
+            json = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TOKEN_TYPE_FUNCTION_NAME, args);
             if (json != null) {
                 xattr = objectMapper.readValue(json, new TypeReference<Map<String, List<String>>>() {});
             }

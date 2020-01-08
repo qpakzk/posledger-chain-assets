@@ -2,6 +2,7 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
+import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.math.BigInteger;
 import java.util.*;
@@ -16,8 +17,6 @@ import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 public class EERC721 {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(EERC721.class);
 
-    private static String chaincodeId = "assetscc";
-
     private ChaincodeProxy chaincodeProxy;
 
     @Autowired
@@ -29,11 +28,7 @@ public class EERC721 {
         this.chaincodeProxy = chaincodeProxy;
     }
 
-    private String caller;
-
-    public void setCaller(String caller) {
-        this.caller = caller;
-    }
+    private String caller = Manager.getCaller();
 
     public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
@@ -41,7 +36,7 @@ public class EERC721 {
         BigInteger balanceBigInt;
         try {
             String[] args = { owner, type };
-            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, chaincodeId, args);
+            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
             balanceBigInt = new BigInteger(balance);
         } catch (ProposalException e) {
             logger.error(e);
@@ -56,7 +51,7 @@ public class EERC721 {
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
         try {
             String[] args = { owner };
-            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, chaincodeId, args);
+            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
             if(response != null) {
                 response = response.substring(1, response.length() - 1);
@@ -79,7 +74,7 @@ public class EERC721 {
         List<BigInteger> tokenIds = new ArrayList<BigInteger>();
         try {
             String[] args = { owner, type };
-            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, chaincodeId, args);
+            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
             if(response != null) {
                 response = response.substring(1, response.length() - 1);
@@ -107,7 +102,7 @@ public class EERC721 {
             }
 
             String[] args = { tokenId.toString() };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DEACTIVATE_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DEACTIVATE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -126,7 +121,7 @@ public class EERC721 {
             }
 
             String[] args = { tokenId.toString(),  Arrays.toString(newIds), Arrays.toString(values), index };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DIVIDE_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DIVIDE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -145,7 +140,7 @@ public class EERC721 {
             }
 
             String[] args = { tokenId.toString(), index, attr };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, UPDATE_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, UPDATE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -159,7 +154,7 @@ public class EERC721 {
         String result;
         try {
             String[] args = { tokenId.toString() };
-            result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -175,7 +170,7 @@ public class EERC721 {
         try {
 
             String[] args = { tokenId.toString() };
-            result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, args);
 
             if(result != null) {
                 histories = Arrays.asList(result.substring(1, result.length() - 1).trim().split(","));

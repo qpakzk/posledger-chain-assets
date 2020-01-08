@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
+import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import org.apache.logging.log4j.LogManager;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -18,8 +19,6 @@ import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 public class XNFT {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(XNFT.class);
-
-    private static String chaincodeId = "assetscc";
 
     private ChaincodeProxy chaincodeProxy;
 
@@ -42,11 +41,7 @@ public class XNFT {
         this.objectMapper = objectMapper;
     }
 
-    private String caller;
-
-    public void setCaller(String caller) {
-        this.caller = caller;
-    }
+    private String caller = Manager.getCaller();
 
     public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- mint SDK called ----------------");
@@ -60,7 +55,7 @@ public class XNFT {
             String xattrJson = objectMapper.writeValueAsString(xattr);
             String uriJson = objectMapper.writeValueAsString(uri);
             String[] args = { tokenId.toString(), type, owner, xattrJson, uriJson };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -80,7 +75,7 @@ public class XNFT {
             }
 
             String[] args = { tokenId.toString(), index, value };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_URI_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_URI_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -94,7 +89,7 @@ public class XNFT {
         String value;
         try {
             String[] args = { tokenId.toString(), index };
-            value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_URI_FUNCTION_NAME, chaincodeId, args);
+            value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_URI_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -113,7 +108,7 @@ public class XNFT {
             }
 
             String[] args = { tokenId.toString(), index, String.valueOf(value) };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -127,7 +122,7 @@ public class XNFT {
         String value = null;
         try {
             String[] args = { tokenId.toString(), index };
-            value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_XATTR_FUNCTION_NAME, chaincodeId, args);
+            value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);

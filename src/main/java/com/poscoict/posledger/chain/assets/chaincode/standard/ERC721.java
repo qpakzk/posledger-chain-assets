@@ -1,6 +1,7 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.math.BigInteger;
 import org.apache.logging.log4j.LogManager;
@@ -23,11 +24,7 @@ public class ERC721 {
         this.chaincodeProxy = chaincodeProxy;
     }
 
-    private String caller;
-
-    public void setCaller(String caller) {
-        this.caller = caller;
-    }
+    private String caller = Manager.getCaller();
 
     public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
@@ -35,7 +32,7 @@ public class ERC721 {
         BigInteger balanceBigInt;
         try {
             String[] args = { owner };
-            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, chaincodeId, args);
+            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
             balanceBigInt = new BigInteger(balance);
         } catch (ProposalException e) {
             logger.error(e);
@@ -50,7 +47,7 @@ public class ERC721 {
         String owner;
         try {
             String[] args = { tokenId.toString() };
-            owner = ChaincodeCommunication.readFromChaincode(chaincodeProxy, OWNER_OF_FUNCTION_NAME, chaincodeId, args);
+            owner = ChaincodeCommunication.readFromChaincode(chaincodeProxy, OWNER_OF_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -71,7 +68,7 @@ public class ERC721 {
             }
 
             String[] args = { from, to, tokenId.toString() };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, TRANSFER_FROM_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, TRANSFER_FROM_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -90,7 +87,7 @@ public class ERC721 {
             }
 
             String[] args = { approved, tokenId.toString() };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, APPROVE_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, APPROVE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -108,7 +105,7 @@ public class ERC721 {
             }
 
             String[] args = { caller, operator, Boolean.toString(approved) };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_APPROVAL_FOR_ALL_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_APPROVAL_FOR_ALL_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -122,7 +119,7 @@ public class ERC721 {
         String approved;
         try {
             String[] args = { tokenId.toString() };
-            approved = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_APPROVED_FUNCTION_NAME, chaincodeId, args);
+            approved = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_APPROVED_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -136,7 +133,7 @@ public class ERC721 {
         boolean result;
         try {
             String[] args = { owner, operator };
-            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, IS_APPROVED_FOR_ALL_FUNCTION_NAME, chaincodeId, args);
+            String response = ChaincodeCommunication.readFromChaincode(chaincodeProxy, IS_APPROVED_FOR_ALL_FUNCTION_NAME, args);
             result = Boolean.parseBoolean(response);
         } catch (ProposalException e) {
             logger.error(e);

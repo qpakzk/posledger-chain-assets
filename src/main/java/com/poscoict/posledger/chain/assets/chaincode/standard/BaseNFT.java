@@ -1,6 +1,7 @@
 package com.poscoict.posledger.chain.assets.chaincode.standard;
 
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
+import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.math.BigInteger;
 
@@ -28,11 +29,7 @@ public class BaseNFT {
         this.chaincodeProxy = chaincodeProxy;
     }
 
-    private String caller;
-
-    public void setCaller(String caller) {
-        this.caller = caller;
-    }
+    private String caller = Manager.getCaller();
 
     public boolean mint(BigInteger tokenId, String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- mint SDK called ----------------");
@@ -44,7 +41,7 @@ public class BaseNFT {
             }
 
             String[] args = { tokenId.toString(), owner };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -64,7 +61,7 @@ public class BaseNFT {
             }
 
             String[] args = { tokenId.toString() };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, BURN_FUNCTION_NAME, chaincodeId, args);
+            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, BURN_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -78,7 +75,7 @@ public class BaseNFT {
         String type;
         try {
             String[] args = { tokenId.toString() };
-            type = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TYPE_FUNCTION_NAME, chaincodeId, args);
+            type = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);

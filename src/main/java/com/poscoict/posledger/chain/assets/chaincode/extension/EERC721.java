@@ -58,7 +58,7 @@ public class EERC721 extends ERC721 {
             String tokenIdsStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
             if(tokenIdsStr != null) {
-                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).trim().split(",");
+                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).split(", ");
                 for (String string : strings) {
                     tokenIds.add(new BigInteger(string));
                 }
@@ -79,7 +79,7 @@ public class EERC721 extends ERC721 {
             String tokenIdsStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
             if(tokenIdsStr != null) {
-                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).trim().split(",");
+                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).split(", ");
                 for (String string : strings) {
                     tokenIds.add(new BigInteger(string));
                 }
@@ -176,7 +176,7 @@ public class EERC721 extends ERC721 {
             result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, args);
 
             if(result != null) {
-                histories = Arrays.asList(result.substring(1, result.length() - 1).trim().split(","));
+                histories = Arrays.asList(result.substring(1, result.length() - 1).split(", "));
             }
 
         } catch (ProposalException e) {

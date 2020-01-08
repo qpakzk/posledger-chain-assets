@@ -69,7 +69,7 @@ public class XType extends SDK {
             String[] args = {};
             tokenTypsString = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_TYPES_OF_FUNCTION_NAME, args);
             if (tokenTypsString != null) {
-                tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).trim().split(","));
+                tokenTypes = Arrays.asList(tokenTypsString.substring(1, tokenTypsString.length() - 1).split(", "));
             }
         } catch (ProposalException e) {
             logger.error(e);

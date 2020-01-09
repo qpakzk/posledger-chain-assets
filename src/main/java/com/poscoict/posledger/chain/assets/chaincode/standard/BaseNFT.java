@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import java.math.BigInteger;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -33,7 +31,7 @@ public class BaseNFT extends ERC721 {
         this.chaincodeProxy = super.getChaincodeProxy();
     }
 
-    public boolean mint(BigInteger tokenId, String owner) throws ProposalException, InvalidArgumentException {
+    public boolean mint(String tokenId, String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- mint SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -43,7 +41,7 @@ public class BaseNFT extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString(), owner };
+            String[] args = { tokenId, owner };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -52,7 +50,7 @@ public class BaseNFT extends ERC721 {
         return result;
     }
 
-    public boolean burn(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public boolean burn(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- burn SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -63,7 +61,7 @@ public class BaseNFT extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, BURN_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -72,12 +70,12 @@ public class BaseNFT extends ERC721 {
         return result;
     }
 
-    public String getType(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public String getType(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getType SDK called ----------------");
 
         String type;
         try {
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             type = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);

@@ -5,7 +5,6 @@ import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication
 import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import java.math.BigInteger;
 import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,14 +33,14 @@ public class EERC721 extends ERC721 {
         this.chaincodeProxy = super.getChaincodeProxy();
     }
 
-    public BigInteger balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
+    public long balanceOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
-        BigInteger balance;
+        long balance;
         try {
             String[] args = { owner, type };
             String balanceStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
-            balance = new BigInteger(balanceStr);
+            balance = Long.parseLong(balanceStr);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
@@ -49,19 +48,16 @@ public class EERC721 extends ERC721 {
         return balance;
     }
 
-    public List<BigInteger> tokenIdsOf(String owner) throws ProposalException, InvalidArgumentException {
+    public List<String> tokenIdsOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- tokenIdsOf SDK called ----------------");
 
-        List<BigInteger> tokenIds = new ArrayList<BigInteger>();
+        List<String> tokenIds = new ArrayList<String>();
         try {
             String[] args = { owner };
             String tokenIdsStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
             if(tokenIdsStr != null) {
-                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).split(", ");
-                for (String string : strings) {
-                    tokenIds.add(new BigInteger(string));
-                }
+                tokenIds = Arrays.asList(tokenIdsStr.substring(1, tokenIdsStr.length() - 1).split(", "));
             }
         } catch (ProposalException e) {
             logger.error(e);
@@ -70,19 +66,16 @@ public class EERC721 extends ERC721 {
         return tokenIds;
     }
 
-    public List<BigInteger> tokenIdsOf(String owner, String type) throws ProposalException, InvalidArgumentException {
+    public List<String> tokenIdsOf(String owner, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- tokenIdsOf SDK called ----------------");
 
-        List<BigInteger> tokenIds = new ArrayList<BigInteger>();
+        List<String> tokenIds = new ArrayList<String>();
         try {
             String[] args = { owner, type };
             String tokenIdsStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, TOKEN_IDS_OF_FUNCTION_NAME, args);
 
             if(tokenIdsStr != null) {
-                String[] strings = tokenIdsStr.substring(1, tokenIdsStr.length() - 1).split(", ");
-                for (String string : strings) {
-                    tokenIds.add(new BigInteger(string));
-                }
+                tokenIds = Arrays.asList(tokenIdsStr.substring(1, tokenIdsStr.length() - 1).split(", "));
             }
         } catch (ProposalException e) {
             logger.error(e);
@@ -91,7 +84,7 @@ public class EERC721 extends ERC721 {
         return tokenIds;
     }
 
-    public boolean deactivate(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public boolean deactivate(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- deactivate SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -102,7 +95,7 @@ public class EERC721 extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DEACTIVATE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -111,7 +104,7 @@ public class EERC721 extends ERC721 {
         return result;
     }
 
-    public boolean divide(BigInteger tokenId, BigInteger[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException {
+    public boolean divide(String tokenId, String[] newIds, String[] values, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- divide SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -131,7 +124,7 @@ public class EERC721 extends ERC721 {
         return result;
     }
 
-    public boolean update(BigInteger tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
+    public boolean update(String tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- update SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -142,7 +135,7 @@ public class EERC721 extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString(), index, attr };
+            String[] args = { tokenId, index, attr };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -151,12 +144,12 @@ public class EERC721 extends ERC721 {
         return result;
     }
 
-    public String query(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public String query(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- query SDK called ----------------");
 
         String result;
         try {
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -165,14 +158,14 @@ public class EERC721 extends ERC721 {
         return result;
     }
 
-    public List<String> queryHistory(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public List<String> queryHistory(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- queryHistory SDK called ----------------");
 
         List<String> histories = new ArrayList<String>();
         String result;
         try {
 
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             result = ChaincodeCommunication.readFromChaincode(chaincodeProxy, QUERY_HISTORY_FUNCTION_NAME, args);
 
             if(result != null) {

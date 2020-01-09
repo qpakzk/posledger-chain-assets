@@ -5,7 +5,6 @@ import com.poscoict.posledger.chain.assets.chaincode.SDK;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
-import java.math.BigInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -32,27 +31,27 @@ public class ERC721 extends SDK {
         this.chaincodeProxy = super.getChaincodeProxy();
     }
 
-    public BigInteger balanceOf(String owner) throws ProposalException, InvalidArgumentException {
+    public long balanceOf(String owner) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- balanceOf SDK called ----------------");
 
-        BigInteger balanceBigInt;
+        long balance;
         try {
             String[] args = { owner };
-            String balance = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
-            balanceBigInt = new BigInteger(balance);
+            String balanceStr = ChaincodeCommunication.readFromChaincode(chaincodeProxy, BALANCE_OF_FUNCTION_NAME, args);
+            balance = Long.parseLong(balanceStr);
         } catch (ProposalException e) {
             logger.error(e);
             throw new ProposalException(e);
         }
-        return balanceBigInt;
+        return balance;
     }
 
-    public String ownerOf(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public String ownerOf(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- ownerOf SDK called ----------------");
 
         String owner;
         try {
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             owner = ChaincodeCommunication.readFromChaincode(chaincodeProxy, OWNER_OF_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -62,7 +61,7 @@ public class ERC721 extends SDK {
     }
 
 
-    public boolean transferFrom(String from, String to, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public boolean transferFrom(String from, String to, String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- transferFrom SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -83,7 +82,7 @@ public class ERC721 extends SDK {
         return result;
     }
 
-    public boolean approve(String approved, BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public boolean approve(String approved, String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- approve SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -122,12 +121,12 @@ public class ERC721 extends SDK {
         return result;
     }
 
-    public String getApproved(BigInteger tokenId) throws ProposalException, InvalidArgumentException {
+    public String getApproved(String tokenId) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getApproved SDK called ----------------");
 
         String approved;
         try {
-            String[] args = { tokenId.toString() };
+            String[] args = { tokenId };
             approved = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_APPROVED_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);

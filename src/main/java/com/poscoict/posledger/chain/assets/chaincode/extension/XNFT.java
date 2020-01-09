@@ -10,8 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
-
-import java.math.BigInteger;
 import java.util.*;
 
 import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
@@ -39,7 +37,7 @@ public class XNFT extends ERC721 {
         this.objectMapper = super.getObjectMapper();
     }
 
-    public boolean mint(BigInteger tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean mint(String tokenId, String type, String owner, Map<String, Object> xattr, Map<String, String> uri) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- mint SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -51,7 +49,7 @@ public class XNFT extends ERC721 {
 
             String xattrJson = objectMapper.writeValueAsString(xattr);
             String uriJson = objectMapper.writeValueAsString(uri);
-            String[] args = { tokenId.toString(), type, owner, xattrJson, uriJson };
+            String[] args = { tokenId, type, owner, xattrJson, uriJson };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, MINT_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -60,7 +58,7 @@ public class XNFT extends ERC721 {
         return result;
     }
 
-    public boolean setURI(BigInteger tokenId, String index, String value) throws ProposalException, InvalidArgumentException {
+    public boolean setURI(String tokenId, String index, String value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setURI SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -71,7 +69,7 @@ public class XNFT extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString(), index, value };
+            String[] args = { tokenId, index, value };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_URI_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -80,12 +78,12 @@ public class XNFT extends ERC721 {
         return result;
     }
 
-    public String getURI(BigInteger tokenId, String index) throws ProposalException, InvalidArgumentException {
+    public String getURI(String tokenId, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getURI SDK called ----------------");
 
         String value;
         try {
-            String[] args = { tokenId.toString(), index };
+            String[] args = { tokenId, index };
             value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_URI_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -94,7 +92,7 @@ public class XNFT extends ERC721 {
         return value;
     }
 
-    public boolean setXAttr(BigInteger tokenId, String index, Object value) throws ProposalException, InvalidArgumentException {
+    public boolean setXAttr(String tokenId, String index, Object value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setXAttr SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -105,7 +103,7 @@ public class XNFT extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString(), index, String.valueOf(value) };
+            String[] args = { tokenId, index, String.valueOf(value) };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -114,12 +112,12 @@ public class XNFT extends ERC721 {
         return result;
     }
 
-    public String getXAttr(BigInteger tokenId, String index) throws ProposalException, InvalidArgumentException {
+    public String getXAttr(String tokenId, String index) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- getXAttr SDK called ----------------");
 
-        String value = null;
+        String value;
         try {
-            String[] args = { tokenId.toString(), index };
+            String[] args = { tokenId, index };
             value = ChaincodeCommunication.readFromChaincode(chaincodeProxy, GET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);

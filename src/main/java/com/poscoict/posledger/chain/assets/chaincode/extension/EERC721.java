@@ -115,7 +115,7 @@ public class EERC721 extends ERC721 {
                 return false;
             }
 
-            String[] args = { tokenId.toString(),  Arrays.toString(newIds), Arrays.toString(values), index };
+            String[] args = { tokenId,  Arrays.toString(newIds), Arrays.toString(values), index };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DIVIDE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);

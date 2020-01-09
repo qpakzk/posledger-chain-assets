@@ -73,7 +73,7 @@ public class ERC721 extends SDK {
                 return false;
             }
 
-            String[] args = { from, to, tokenId.toString() };
+            String[] args = { from, to, tokenId };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, TRANSFER_FROM_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -93,7 +93,7 @@ public class ERC721 extends SDK {
                 return false;
             }
 
-            String[] args = { approved, tokenId.toString() };
+            String[] args = { approved, tokenId };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, APPROVE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);

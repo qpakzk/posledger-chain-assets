@@ -59,7 +59,7 @@ public class XType extends SDK {
         return result;
     }
 
-    public boolean dropTokenType(String admin, String type) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean dropTokenType(String admin, String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- dropTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -134,7 +134,7 @@ public class XType extends SDK {
         return xattr;
     }
 
-    public boolean enrollAttributeOfTokenType(String admin, String type, String attribute, String dataType, String initialValue) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean enrollAttributeOfTokenType(String admin, String type, String attribute, String dataType, String initialValue) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- enrollAttributeOfTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -153,7 +153,7 @@ public class XType extends SDK {
         return result;
     }
 
-    public boolean dropAttributeOfTokenType(String admin, String type, String attribute) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean dropAttributeOfTokenType(String admin, String type, String attribute) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- dropAttributeOfTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -172,7 +172,7 @@ public class XType extends SDK {
         return result;
     }
 
-    public boolean updateAttributeOfTokenType(String admin, String type, String attribute, List<String> pair) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean updateAttributeOfTokenType(String admin, String type, String attribute, List<String> pair) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- updateAttributeOfTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
@@ -191,7 +191,7 @@ public class XType extends SDK {
         return result;
     }
 
-    public List<String> retrieveAttributeOfTokenType(String type, String attribute) throws ProposalException, InvalidArgumentException, IOException {
+    public List<String> retrieveAttributeOfTokenType(String type, String attribute) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- retrieveAttributeOfTokenType SDK called ----------------");
 
         String string;

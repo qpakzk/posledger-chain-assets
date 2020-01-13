@@ -8,8 +8,6 @@ import org.hyperledger.fabric.sdk.exception.ProposalException;
 import java.util.Collection;
 
 public class ChaincodeCommunication {
-    private static final String SUCCESS_STATUS = "SUCCESS";
-
     private static String chaincodeId = Manager.getChaincodeId();
 
     private ChaincodeCommunication() {}

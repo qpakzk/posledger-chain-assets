@@ -39,18 +39,14 @@ public class XType extends SDK {
         this.objectMapper = super.getObjectMapper();
     }
 
-    public boolean enrollTokenType(String admin, String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean enrollTokenType(String type, Map<String, List<String>> xattr) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- enrollTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
         boolean result;
         try {
-            if (!caller.equals(admin)) {
-                return false;
-            }
-
             String json = objectMapper.writeValueAsString(xattr);
-            String[] args = { type, json };
+            String[] args = { caller, type, json };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, ENROLL_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -59,17 +55,13 @@ public class XType extends SDK {
         return result;
     }
 
-    public boolean dropTokenType(String admin, String type) throws ProposalException, InvalidArgumentException {
+    public boolean dropTokenType(String type) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- dropTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
         boolean result;
         try {
-            if (!caller.equals(admin)) {
-                return false;
-            }
-
-            String[] args = { type };
+            String[] args = { caller, type };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DROP_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -96,18 +88,14 @@ public class XType extends SDK {
         return tokenTypes;
     }
 
-    public boolean updateTokenType(String admin, String type, Map<String, List<String>> attributes) throws ProposalException, InvalidArgumentException, JsonProcessingException {
+    public boolean updateTokenType(String type, Map<String, List<String>> attributes) throws ProposalException, InvalidArgumentException, JsonProcessingException {
         logger.info("---------------- updateTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
         boolean result;
         try {
-            if (!caller.equals(admin)) {
-                return false;
-            }
-
             String json = objectMapper.writeValueAsString(attributes);
-            String[] args = { type, json };
+            String[] args = { caller, type, json };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, UPDATE_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -134,17 +122,13 @@ public class XType extends SDK {
         return xattr;
     }
 
-    public boolean enrollAttributeOfTokenType(String admin, String type, String attribute, String dataType, String initialValue) throws ProposalException, InvalidArgumentException {
+    public boolean enrollAttributeOfTokenType(String type, String attribute, String dataType, String initialValue) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- enrollAttributeOfTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
         boolean result;
         try {
-            if (!caller.equals(admin)) {
-                return false;
-            }
-
-            String[] args = { type, attribute, dataType, initialValue };
+            String[] args = { caller, type, attribute, dataType, initialValue };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, EMROLL_ATTRIBUTE_OF_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -153,17 +137,13 @@ public class XType extends SDK {
         return result;
     }
 
-    public boolean dropAttributeOfTokenType(String admin, String type, String attribute) throws ProposalException, InvalidArgumentException {
+    public boolean dropAttributeOfTokenType(String type, String attribute) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- dropAttributeOfTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
         boolean result;
         try {
-            if (!caller.equals(admin)) {
-                return false;
-            }
-
-            String[] args = { type, attribute };
+            String[] args = { caller, type, attribute };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, DROP_ATTRIBUTE_OF_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);
@@ -172,17 +152,13 @@ public class XType extends SDK {
         return result;
     }
 
-    public boolean updateAttributeOfTokenType(String admin, String type, String attribute, List<String> pair) throws ProposalException, InvalidArgumentException {
+    public boolean updateAttributeOfTokenType(String type, String attribute, List<String> pair) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- updateAttributeOfTokenType SDK called ----------------");
 
         String caller = Manager.getCaller();
         boolean result;
         try {
-            if (!caller.equals(admin)) {
-                return false;
-            }
-
-            String[] args = { type, attribute, pair.toString() };
+            String[] args = { caller, type, attribute, pair.toString() };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, UPDATE_ATTRIBUTE_OF_TOKEN_TYPE_FUNCTION_NAME, args);
         } catch (ProposalException e) {
             logger.error(e);

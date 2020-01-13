@@ -15,7 +15,6 @@ public class ChaincodeCommunication {
     private ChaincodeCommunication() {}
 
     public static boolean writeToChaincode(ChaincodeProxy chaincodeProxy, String function, String[] args) throws InvalidArgumentException, ProposalException {
-        String status = null;
         boolean result = false;
 
         ChaincodeRequest chaincodeRequest = new ChaincodeRequest();
@@ -27,12 +26,8 @@ public class ChaincodeCommunication {
 
         for (ProposalResponse response : responses) {
             if (response.getChaincodeActionResponsePayload() != null) {
-                status = response.getStatus().toString();
+                result =  Boolean.parseBoolean(response.getMessage());
             }
-        }
-
-        if (status != null && status.equals(SUCCESS_STATUS)) {
-            result = true;
         }
 
         return result;

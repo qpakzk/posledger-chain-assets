@@ -2,7 +2,6 @@ package com.poscoict.posledger.chain.assets.chaincode.extension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscoict.posledger.chain.assets.chaincode.util.ChaincodeCommunication;
-import com.poscoict.posledger.chain.assets.chaincode.standard.ERC721;
 import com.poscoict.posledger.chain.assets.chaincode.util.Manager;
 import com.poscoict.posledger.chain.chaincode.executor.ChaincodeProxy;
 import java.util.*;

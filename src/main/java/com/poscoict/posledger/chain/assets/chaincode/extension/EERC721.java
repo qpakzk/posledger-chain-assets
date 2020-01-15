@@ -14,7 +14,7 @@ import org.hyperledger.fabric.sdk.exception.ProposalException;
 
 import static com.poscoict.posledger.chain.assets.chaincode.util.Function.*;
 
-public class EERC721 extends ERC721 {
+public class EERC721 extends XNFT {
     private static final Logger logger = LogManager.getLogger(EERC721.class);
 
     private ChaincodeProxy chaincodeProxy;
@@ -127,21 +127,7 @@ public class EERC721 extends ERC721 {
     public boolean update(String tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- update SDK called ----------------");
 
-        String caller = Manager.getCaller();
-        boolean result;
-        try {
-            String owner = super.ownerOf(tokenId);
-            if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
-                return false;
-            }
-
-            String[] args = { tokenId, index, attr };
-            result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, args);
-        } catch (ProposalException e) {
-            logger.error(e);
-            throw new ProposalException(e);
-        }
-        return result;
+        return super.setXAttr(tokenId, index, attr);
     }
 
     public String query(String tokenId) throws ProposalException, InvalidArgumentException {

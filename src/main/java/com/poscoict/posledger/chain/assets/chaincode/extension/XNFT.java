@@ -61,14 +61,8 @@ public class XNFT extends ERC721 {
     public boolean setURI(String tokenId, String index, String value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setURI SDK called ----------------");
 
-        String caller = Manager.getCaller();
         boolean result;
         try {
-            String owner = super.ownerOf(tokenId);
-            if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
-                return false;
-            }
-
             String[] args = { tokenId, index, value };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_URI_FUNCTION_NAME, args);
         } catch (ProposalException e) {
@@ -95,14 +89,8 @@ public class XNFT extends ERC721 {
     public boolean setXAttr(String tokenId, String index, Object value) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- setXAttr SDK called ----------------");
 
-        String caller = Manager.getCaller();
         boolean result;
         try {
-            String owner = super.ownerOf(tokenId);
-            if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
-                return false;
-            }
-
             String[] args = { tokenId, index, String.valueOf(value) };
             result = ChaincodeCommunication.writeToChaincode(chaincodeProxy, SET_XATTR_FUNCTION_NAME, args);
         } catch (ProposalException e) {

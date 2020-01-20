@@ -126,6 +126,12 @@ public class EERC721 extends XNFT {
     public boolean update(String tokenId, String index, String attr) throws ProposalException, InvalidArgumentException {
         logger.info("---------------- update SDK called ----------------");
 
+        String caller = Manager.getCaller();
+        String owner = super.ownerOf(tokenId);
+        if(!(caller.equals(owner) || super.isApprovedForAll(owner, caller))) {
+            return false;
+        }
+
         return super.setXAttr(tokenId, index, attr);
     }
 
